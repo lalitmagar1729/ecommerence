@@ -1,0 +1,221 @@
+<%- include("navbar.ejs") %>
+
+  <div class="container bg-white p-4 rounded-3 shadow-lg my-4 border border-light">
+    <h4 class="mb-4 text-primary fw-bold">
+      <i class="bi bi-receipt me-2"></i>Order Details - ID: <%= order[0].order_id %>
+    </h4>
+
+    <!-- User Info -->
+    <div class="row mb-3">
+      <div class="col-md-4"><strong>User ID:</strong> <span class="text-secondary">
+          <%= order[0].user_id %>
+        </span></div>
+      <div class="col-md-4"><strong>First Name:</strong> <span class="text-secondary">
+          <%= order[0].first_name %>
+        </span></div>
+      <div class="col-md-4"><strong>Last Name:</strong> <span class="text-secondary">
+          <%= order[0].last_name %>
+        </span></div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-4"><strong>Email:</strong> <span class="text-secondary">
+          <%= order[0].email %>
+        </span></div>
+      <div class="col-md-4"><strong>Phone:</strong> <span class="text-secondary">
+          <%= order[0].phone %>
+        </span></div>
+      <div class="col-md-4"><strong>City:</strong> <span class="text-secondary">
+          <%= order[0].city %>
+        </span></div>
+    </div>
+
+    <!-- Address Info -->
+    <div class="row mb-3">
+      <div class="col-md-4"><strong>Address:</strong> <span class="text-secondary">
+          <%= order[0].address %>
+        </span></div>
+      <div class="col-md-4"><strong>State:</strong> <span class="text-secondary">
+          <%= order[0].state %>
+        </span></div>
+      <div class="col-md-4"><strong>ZIP Code:</strong> <span class="text-secondary">
+          <%= order[0].zipCode %>
+        </span></div>
+    </div>
+
+    <!-- Payment Info -->
+    <div class="row mb-3">
+      <div class="col-md-4"><strong>Payment:</strong> <span class="text-secondary text-capitalize">
+          <%= order[0].payment %>
+        </span></div>
+      <div class="col-md-4"><strong>Payment Status:</strong> <span class="text-secondary text-capitalize">
+          <%= order[0].payment_status %>
+        </span></div>
+      <div class="col-md-4"><strong>Transaction ID:</strong> <span class="text-secondary">
+          <%= order[0].transaction_id %>
+        </span></div>
+    </div>
+
+    <!-- Notes -->
+    <div class="row mb-3">
+      <div class="col-md-12"><strong>Notes:</strong> <span class="text-secondary">
+          <%= order[0].notes %>
+        </span></div>
+    </div>
+
+    <!-- Dates & Amounts -->
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <strong>Total Amount:</strong>
+        <span class="fw-bold text-success">₹<%= order[0].total_amount %></span>
+      </div>
+
+      <div class="col-md-3">
+        <strong>Order Date:</strong>
+        <span class="text-secondary">
+          <%= order[0].order_date ? new Date(order[0].order_date).toISOString().slice(0,10) : "Not Available" %>
+        </span>
+      </div>
+
+      <div class="col-md-3">
+        <strong>Dispatch Date:</strong>
+        <span class="text-secondary">
+          <%= order[0].dispatch_date && !isNaN(new Date(order[0].dispatch_date).getTime()) ? new Date(order[0].dispatch_date).toISOString().slice(0,10) : "Not Available" %>
+        </span>
+      </div>
+
+      <div class="col-md-3">
+        <strong>Deliver Date:</strong>
+        <span class="text-secondary">
+          <%= order[0].deliver_date && !isNaN(new Date(order[0].deliver_date).getTime()) ? new Date(order[0].deliver_date).toISOString().slice(0,10) : "Not Available" %>
+        </span>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3">
+        <strong>Return Date:</strong>
+        <span class="text-secondary">
+          <%= order[0].return_date && !isNaN(new Date(order[0].return_date).getTime()) ? new Date(order[0].return_date).toISOString().slice(0,10) : "Not Available" %>
+        </span>
+      </div>
+
+        <div class="col-md-3">
+        <strong>Refund Date:</strong>
+        <span class="text-secondary">
+          <%= order[0].refund_date && !isNaN(new Date(order[0].refund_date).getTime()) ? new Date(order[0].refund_date).toISOString().slice(0,10) 
+              : "Not Available" %>
+        </span>
+      </div>
+
+
+       <div class="col-md-3">
+        <strong>Cancel Date:</strong>
+        <span class="text-secondary">
+          <%= order[0].cancel_date && !isNaN(new Date(order[0].cancel_date).getTime()) ? new Date(order[0].cancel_date).toISOString().slice(0,10) 
+              : "Not Available" %>
+        </span>
+      </div>
+
+
+       <div class="col-md-3">
+  <% 
+    let badgeClass = '';
+    let status = order[0] && order[0].order_status ? order[0].order_status : 'Unknown';
+
+    switch(status.toLowerCase()) {
+      case 'pending': badgeClass='bg-warning text-dark'; break;
+      case 'dispatch': badgeClass='bg-primary text-white'; break;
+      case 'delivered': badgeClass='bg-success text-white'; break;
+      case 'cancelled': badgeClass='bg-danger text-white'; break;
+      case 'return': badgeClass='bg-info text-dark'; break;
+      case 'refund': badgeClass='bg-secondary text-white'; break;
+      case 'rejected': badgeClass='bg-dark text-white'; break;
+      default: badgeClass='bg-light text-dark'; 
+    }
+
+    // Capitalize first letter properly
+    let statusText = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+  %>
+
+  <span class="badge rounded-pill <%= badgeClass %> fs-6 px-3 py-2">
+    Status: <%= statusText %>
+  </span>
+</div>
+
+      </div>
+    </div>
+
+    <div class="container bg-white p-4 rounded-3 shadow-lg my-4 border border-light">
+      <h4 class="mb-4 text-primary fw-bold">
+        <i class="bi bi-box-seam me-2"></i>Ordered Products
+      </h4>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle text-center mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>Color</th>
+              <th>Variation</th>
+              <th>Image</th>
+              <th>MRP</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i=0; i < order_products.length; i++) { %>
+              <tr>
+                <td>
+                  <%= order_products[i].product_name %>
+                </td>
+                <td>
+                  <%= order_products[i].product_color %>
+                </td>
+                <td>
+                  <%= order_products[i].variation_title %>
+                </td>
+                <td>
+                  <img src="/uploads/products/<%= order_products[i].product_main_image %>" alt="Product Image"
+                    class="img-thumbnail rounded shadow-sm" style="width:50px; height:50px; object-fit:cover;">
+                </td>
+                <td>
+                  <%= order_products[i].product_price %>
+                </td>
+                <td>
+                  <%= order_products[i].product_quantity %>
+                </td>
+                <td>&#8377;<%= order_products[i].variation_price %>
+                </td>
+                <td>&#8377;<%= order_products[i].total_price %>
+                </td>
+              </tr>
+              <% } %>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-12 text-center mt-3">
+        <% if(order[0].order_status==='pending' ) { %>
+          <a href="/admin/dispatch/<%= order[0].order_id %>" class="btn btn-primary btn-save">Dispatch Order</a>
+          <% } %>
+            <% if(order[0].order_status==='dispatch' ) { %>
+              <a href="/admin/deliver/<%= order[0].order_id %>" class="btn btn-primary">Deliver Order</a>
+              <% } %>
+                <% if(order[0].order_status==='delivered' ) { %>
+                  <a href="/admin/return/<%= order[0].order_id %>" class="btn btn-primary">Return Order</a>
+                  <% } %>
+                    <% if(order[0].order_status==='return' ) { %>
+                      <a href="/admin/refund/<%= order[0].order_id %>" class="btn btn-primary">Refund Order</a>
+                      <% } %>
+                        <% if(order[0].order_status==='refund' ) { %>
+                          <a href="/admin/cancel/<%= order[0].order_id %>" class="btn btn-primary">Cancel Order</a>
+                          <% } %>
+                            <% if(order[0].order_status==='cancelled' ) { %>
+                              <a href="/admin/orders %>" class="btn btn-primary">Reject Order</a>
+                              <% } %>
+      </div>
+    </div>
+
+
+
+    <%- include("footer.ejs") %>

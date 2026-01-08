@@ -1,0 +1,162 @@
+<%- include("navbar.ejs") %>
+
+<!-- Login Section -->
+<section class="login-section py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-5 col-md-7 col-sm-10">
+        <div class="card shadow-lg border-0 animated-card">
+          <div class="card-body p-5">
+
+            <!-- Header -->
+            <div class="text-center mb-4">
+              <i class="bi bi-lightning-charge-fill text-primary" style="font-size: 3rem;"></i>
+              <h2 class="mt-3 mb-2">Welcome Back</h2>
+              <p class="text-muted">Sign in to your ElectroStore account</p>
+            </div>
+
+            <!-- Error Alert -->
+            <% if (req.query.error) { %>
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <%= req.query.error %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <% } %>
+
+            <!-- Login Form -->
+            <form class="needs-validation" action="/login" method="post" novalidate>
+              <input type="hidden" name="redirect" value="<%- req.query.redirect %>">
+
+              <!-- Email Field -->
+              <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <div class="input-group">
+                  <span class="input-group-text" id="email-addon">
+                    <i class="bi bi-envelope"></i>
+                  </span>
+                  <input
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    id="email"
+                    placeholder="Enter your email"
+                    required
+                    aria-label="Email Address"
+                    aria-describedby="email-addon"
+                  >
+                  <div class="invalid-feedback">
+                    Please provide a valid email address.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Password Field -->
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text" id="password-addon">
+                    <i class="bi bi-lock"></i>
+                  </span>
+                  <input
+                    type="password"
+                    name="password"
+                    class="form-control"
+                    id="password"
+                    placeholder="Enter your password"
+                    required
+                    aria-label="Password"
+                    aria-describedby="password-addon"
+                  >
+                   <span class="input-group-text toggle-password" style="cursor: pointer;">
+                    <i class="bi bi-eye" id="toggleIcon"></i>
+                    </span>
+                  <div class="invalid-feedback">
+                    Please provide a valid password.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Forgot Password -->
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <a href="/forgot-password" class="text-decoration-none">Forgot Password?</a>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-primary w-100 btn-lg mb-3">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+              </button>
+
+              <!-- Signup Link -->
+              <div class="text-center">
+                <p class="text-muted mb-0">Don't have an account?
+                  <a href="/create_account" class="text-decoration-none fw-semibold">Create one here</a>
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="text-center mt-4">
+          <p class="text-muted small">
+            By signing in, you agree to our
+            <a href="/terms" class="text-decoration-none">Terms of Service</a>
+            and
+            <a href="/privacy" class="text-decoration-none">Privacy Policy</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Custom CSS -->
+<style>
+  .form-control:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+  }
+  .btn-primary:hover {
+      background-color: #1e40af;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  .animated-card {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s forwards;
+  }
+  @keyframes fadeInUp {
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+</style>
+
+<!-- Custom JS -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const passwordInput = document.getElementById('password');
+  const togglePassword = document.querySelector('.toggle-password');
+  const toggleIcon = document.getElementById('toggleIcon');
+
+  togglePassword.addEventListener('click', () => {
+    // Toggle the type attribute
+    if(passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      toggleIcon.classList.remove('bi-eye');
+      toggleIcon.classList.add('bi-eye-slash');
+    } else {
+      passwordInput.type = 'password';
+      toggleIcon.classList.remove('bi-eye-slash');
+      toggleIcon.classList.add('bi-eye');
+    }
+  });
+});
+</script>
+
+
+
+<%- include("footer.ejs") %>

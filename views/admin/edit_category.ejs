@@ -1,0 +1,68 @@
+<%- include("navbar.ejs") %>
+  <div class="container mt-5">
+    <div class="card shadow-sm border-0">
+
+      <div class="card-body">
+        <form action="/admin/update_category" method="post" enctype="multipart/form-data">
+
+          <!-- Hidden ID -->
+          <input type="hidden" name="category_id" value="<%= info[0].category_id %>">
+
+          <!-- Category Name -->
+          <div class="mb-3">
+            <label for="category_name" class="form-label fw-bold">Category Name</label>
+            <input type="text" class="form-control" id="category_name" name="category_name"
+              placeholder="Enter category name" value="<%= info[0].category_name %>" required>
+          </div>
+
+          <!-- Category Description -->
+          <div class="mb-3">
+            <label for="category_description" class="form-label fw-bold">Category Description</label>
+            <textarea class="form-control" id="category_description" name="category_description" rows="1"
+              placeholder="Enter category description"><%= info[0].category_description %></textarea>
+          </div>
+
+          <!-- Category Image -->
+          <div class="mb-3">
+            <label for="category_image" class="form-label fw-bold">Category Image</label>
+            <input type="file" class="form-control" id="category_image" name="category_image" accept="image/*">
+            <small class="form-text text-muted" id="existing-text">Existing Image: <%= info[0].category_image %></small>
+          </div>
+
+          <!-- Show Current Image -->
+          <% if (info[0].category_image) { %>
+            <div class="mb-3" id="current-image-container">
+              <label class="form-label fw-bold">Existing Image</label><br>
+              <img src="/uploads/category/<%= info[0].category_image %>" alt="Category Image"
+                class="img-thumbnail border" style="max-width: 200px;">
+            </div>
+            <% } %>
+
+              <!-- Preview New Uploaded Image -->
+              <div class="mb-3" id="preview-container" style="display:none;">
+                <label class="form-label fw-bold">New Image</label><br>
+                <img id="preview-image" class="img-thumbnail border" style="max-width: 200px;" />
+              </div>
+
+              <!-- Status -->
+              <div class="mb-3">
+                <label for="category_status" class="form-label fw-bold">Status</label>
+                <select id="category_status" name="category_status" class="form-select">
+                  <option value="active" <%=info[0].category_status==='active' ? 'selected' : '' %>>Active</option>
+                  <option value="inactive" <%=info[0].category_status==='inactive' ? 'selected' : '' %>>Inactive
+                  </option>
+                </select>
+              </div>
+
+              <!-- Save Button -->
+              <div class="text-center">
+                <button type="submit" class="btn btn-success px-4">
+                  <i class="bi bi-save me-1"></i> Update Category
+                </button>
+              </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+  <%- include("footer.ejs") %>

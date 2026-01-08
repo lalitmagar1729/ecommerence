@@ -1,0 +1,99 @@
+<%- include("navbar.ejs") %>
+
+<div class="container my-4">
+  <form id="privacyForm" action="/admin/save_privacy" method="post">
+    <div class="card shadow-sm">
+      <div class="card-body">
+
+        <!-- Header -->
+        <h3 class="mb-3">Manage Privacy Policy</h3>
+        <small class="text-muted d-block mb-4">Add or update the Privacy Policy for the website</small>
+
+        <div class="mb-3">
+          <label for="privacy_title" class="form-label fw-semibold">Title:</label>
+          <input type="text" name="privacy_title" id="privacy_title" class="form-control" placeholder="Enter title..." required>
+        </div>
+
+        <div class="mb-3">
+          <label for="privacy_editor" class="form-label fw-semibold">Description:</label>
+          <!-- CKEditor textarea -->
+          <textarea id="privacy_editor" rows="6" placeholder="Enter privacy policy..."></textarea>
+          <!-- Hidden input to store CKEditor data -->
+          <input type="hidden" name="privacy_description" id="privacy_content" required>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save me-1"></i> Save Privacy Policy
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+
+  <!-- Privacy Policy Table -->
+  <div class="mt-4">
+    <table class="table table-bordered table-striped table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i = 0; i < privacy.length; i++) { %>
+          <tr>
+            <td><%= i + 1 %></td>
+            <td><%= privacy[i].privacy_title %></td>
+            <td>
+              <%- privacy[i].privacy_description.split(' ').slice(0, 12).join(' ') %>
+              <%- privacy[i].privacy_description.split(' ').length > 12 ? '...' : '' %>
+            </td>
+            <td>
+              <a href="/admin/edit_privacy/<%= privacy[i].privacy_id %>" class="btn btn-sm btn-primary">
+                <i class="bi bi-pencil-square"></i>
+              </a>
+              <a href="/admin/delete_privacy/<%= privacy[i].privacy_id %>" class="btn btn-sm btn-danger">
+                <i class="bi bi-trash"></i>
+              </a>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CKEditor CDN -->
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+<script>
+  let privacyEditor;
+
+  ClassicEditor
+    .create(document.querySelector('#privacy_editor'), {
+      toolbar: [
+        'heading', '|', 'bold', 'italic', 'link',
+        'bulletedList', 'numberedList', 'blockQuote',
+        '|', 'insertTable', 'mediaEmbed', 'undo', 'redo'
+      ]
+    })
+    .then(editor => {
+      privacyEditor = editor;
+    })
+    .catch(error => {
+      console.error('CKEditor error:', error);
+    });
+
+  // Sync CKEditor content on form submit
+  document.getElementById('privacyForm').addEventListener('submit', function(event) {
+    if (privacyEditor) {
+      document.getElementById('privacy_content').value = privacyEditor.getData();
+    }
+  });
+</script>
+
+<%- include("footer.ejs") %>

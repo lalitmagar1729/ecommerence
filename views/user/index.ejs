@@ -1,0 +1,217 @@
+<%- include("navbar.ejs") %>
+    <!-- Hero Slider -->
+    <section class="hero-section py-4">
+        <div class="container">
+            <div id="heroCarousel" class="carousel slide hero-slider" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <% for(var i=0; i < sliders.length; i++) { %>
+                        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="<%= i %>"
+                            class="<%= (i === 0) ? 'active' : '' %>"></button>
+                        <% } %>
+                </div>
+
+                <div class="carousel-inner h-100">
+                    <% for(var i=0; i < sliders.length ;i++) { %>
+                        <div class="carousel-item <%= (i === 0) ? 'active' : '' %> h-100">
+                            <div class="hero-slide"
+                                style="background-image: url('uploads/slider/<%= sliders[i].slider_image %>');">
+                                <div class="container">
+                                    <div class="hero-content">
+                                        <h1 class="display-4 fw-bold mb-3">
+                                            <%= sliders[i].slider_title %>
+                                        </h1>
+                                        <p class="lead mb-4">
+                                            <%= sliders[i].slider_description %>
+                                        </p>
+                                        <a href="/products" class="btn btn-light btn-lg">
+                                            <%= sliders[i].slider_button_text %>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                </div>
+
+                <!-- <button class="carousel-control-prev" style="z-index: 1000;" type="button"
+                    data-bs-target="#heroCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" style="z-index: 1000;" type="button"
+                    data-bs-target="#heroCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Categories -->
+    <section class="categories-section py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-center mb-5">Shop by Category</h2>
+                </div>
+            </div>
+            <div class="row g-4">
+                <% for(var i=0; i < categories.length; i++) { %>
+                    <div class="col-lg-3 col-md-6">
+                        <a href="/products?category=<%= categories[i].category_id %>" class="category-card">
+                            <img src="uploads/category/<%= categories[i].category_image %>" class="card-img-top"
+                                alt="Smartphones">
+                            <div class="card-body">
+                                <h5 class="category-title">
+                                    <%= categories[i].category_name %>
+                                </h5>
+                                <p class="text-muted mb-0">
+                                    <%= categories[i].category_description %>
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                    <% } %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Deals -->
+    <section class="best-deals-section py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-center mb-5">Best Deals</h2>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <% for(var i=0; i < bestDeals.length; i++) { %>
+                    <% if (bestDeals[i].is_highlighted==='Yes' || bestDeals[i].is_most_selling==='Yes' ) { %>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="product-card" data-product-id="<%= bestDeals[i].product_id %>"
+                                data-product-name="<%= bestDeals[i].product_name %>"
+                                data-product-price="<%= bestDeals[i].product_price %>"
+                                data-product-image="<%= bestDeals[i].product_image %>">
+                                <a
+                                    href="/product_details/<%= bestDeals[i].product_id %>/<%= bestDeals[i].products_variation_id %>">
+                                    <img src="uploads/products/<%= bestDeals[i].product_main_image %>"
+                                        class="card-img-top" alt="<%= bestDeals[i].product_name %>">
+                                </a>
+                                <div class="card-body">
+                                    <a
+                                        href="/product_details/<%= bestDeals[i].product_id %>/<%= bestDeals[i].products_variation_id %>">
+                                        <h5 class="product-title">
+                                            <%= bestDeals[i].product_name %>
+                                        </h5>
+                                        <div class="product-price">
+                                            <span class="current-price">₹<%= bestDeals[i].variation_market_price %>
+                                                    </span>
+                                            <span class="old-price">₹<%= bestDeals[i].variation_price %></span>
+                                        </div>
+                                    </a>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-add-cart flex-fill">
+                                            <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                                        </button>
+                                        <button class="btn btn-wishlist">
+                                            <i class="bi bi-heart"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                            <% } %>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- How We Work -->
+    <section class="how-we-work-section py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-center mb-5">How We Work</h2>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="how-we-work text-center">
+                        <div class="step-icon">
+                            <i class="bi bi-search"></i>
+                        </div>
+                        <h4>Browse Products</h4>
+                        <p class="text-muted">Explore our extensive collection of premium electronics and find exactly
+                            what you need.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="how-we-work text-center">
+                        <div class="step-icon">
+                            <i class="bi bi-cart-plus"></i>
+                        </div>
+                        <h4>Add to Cart</h4>
+                        <p class="text-muted">Select your favorite items and add them to your cart with just one click.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="how-we-work text-center">
+                        <div class="step-icon">
+                            <i class="bi bi-truck"></i>
+                        </div>
+                        <h4>Fast Delivery</h4>
+                        <p class="text-muted">Enjoy lightning-fast delivery with secure packaging and real-time
+                            tracking.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Most Selling Products -->
+    <section class="most-selling-section py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-center mb-5">Most Selling Products</h2>
+                </div>
+            </div>
+            <div class="row g-4">
+                <% for(var i=0; i < mostSelling.length; i++) { %>
+                    <% if (mostSelling[i].is_highlighted==='Yes' || mostSelling[i].is_most_selling==='Yes' ) { %>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="product-card" data-product-id="<%= mostSelling[i].product_id %>"
+                                data-product-name="<%= mostSelling[i].product_name %>"
+                                data-product-price="<%= mostSelling[i].product_price %>"
+                                data-product-image="<%= mostSelling[i].product_image %>">
+                                <img src="/uploads/products/<%= mostSelling[i].product_main_image %>"
+                                    class="card-img-top" alt="<%= mostSelling[i].product_name %>">
+                                <div class="card-body">
+                                    <h5 class="product-title">
+                                        <%= mostSelling[i].product_name %>
+                                    </h5>
+                                    <div class="product-price">
+                                        <span class="current-price">₹<%= mostSelling[i].variation_price %></span>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-add-cart flex-fill">
+                                            <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                                        </button>
+                                        <button class="btn btn-wishlist">
+                                            <i class="bi bi-heart"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                            <% } %>
+
+            </div>
+        </div>
+    </section>
+    <%- include("footer.ejs") %>

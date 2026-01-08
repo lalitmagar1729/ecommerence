@@ -1,0 +1,82 @@
+<%- include("navbar.ejs") %>
+
+<div class="container bg-white p-4 rounded shadow-sm">
+  <form action="/admin/save_product" method="POST" enctype="multipart/form-data">
+    <!-- Header -->
+    <div class="row mb-4">
+      <div class="col">
+        <h3 class="mb-1">Add Product</h3>
+        <small class="text-muted">Fill in the details to add a new product</small>
+      </div>
+    </div>
+
+    <!-- Product Fields -->
+    <div class="row g-3">
+
+      <div class="col-md-6">
+        <label for="category_id" class="form-label fw-semibold">Select Category*</label>
+        <select  name="category_id" class="form-select" id="category_id" required>
+          <option value="" disabled selected>-- Select Category --</option>
+          <% for(var i=0; i < categories.length; i++) { %>
+            <option value="<%= categories[i].category_id %>"><%= categories[i].category_name %></option>
+          <% } %>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label for="product_name" class="form-label fw-semibold">Product Name*</label>
+        <input type="text" name="product_name" class="form-control" id="product_name" placeholder="Enter product name" required>
+      </div>
+
+      <div class="col-md-6">
+        <label for="product_brand" class="form-label fw-semibold">Product Brand</label>
+        <input type="text" name="product_brand" class="form-control" id="product_brand" placeholder="Enter product brand" required>
+      </div>
+
+      <div class="col-md-6">
+        <label for="product_details" class="form-label fw-semibold">Product Details</label>
+        <textarea name="product_details" class="form-control" id="product_details" placeholder="Enter product details" rows="1"></textarea>
+      </div>
+
+      <div class="col-md-6">
+        <label for="product_colors" class="form-label fw-semibold">Available Colors</label>
+        <input type="text" name="product_colors" class="form-control" id="product_colors" placeholder="E.g. Red, Blue, Black">
+      </div>
+
+      <div class="col-md-6">
+        <label for="product_main_image" class="form-label fw-semibold">Product Main Image*</label>
+        <input type="file" name="product_main_image" class="form-control" id="product_main_image" accept="image/*" required>
+      </div>
+
+      <div class="col-md-6">
+        <label for="is_highlighted" class="form-label fw-semibold">Highlighted?</label>
+        <select class="form-select" name="is_highlighted" id="is_highlighted">
+          <option value="No" selected>No</option>
+          <option value="Yes">Yes</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label for="is_most_selling" class="form-label fw-semibold">Most Selling?</label>
+        <select class="form-select" name="is_most_selling" id="is_most_selling">
+          <option value="No" selected>No</option>
+          <option value="Yes">Yes</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="row mt-4">
+      <div class="col text-center">
+        <button type="submit" class="btn btn-primary btn-save px-4">
+          <i class="bi bi-plus-circle me-1"></i> Add Product
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<%- include("footer.ejs") %>
+
+

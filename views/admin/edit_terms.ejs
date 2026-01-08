@@ -1,0 +1,69 @@
+<%- include("navbar.ejs") %>
+
+
+<div class="container my-4">
+  <form id="termsForm" action="/admin/update_terms" method="post">
+    <div class="card shadow-sm">
+      <div class="card-body">
+
+        <!-- Header -->
+        <h3 class="mb-3">Update Terms & Conditions</h3>
+        <small class="text-muted d-block mb-4">Add or update Terms & Conditions for the website</small>
+
+        <!-- Hidden -->
+         <input type="hidden" name="terms_id" value="<%= terms_info[0].terms_id %>">
+
+        <div class="mb-3">
+          <label for="terms_title" class="form-label fw-semibold">Title:</label>
+          <input type="text" name="terms_title" id="terms_title" class="form-control" placeholder="Enter title..." value="<%= terms_info[0].terms_title %>" autocomplete="off"  required>
+        </div>
+
+        <div class="mb-3">
+          <label for="terms_editor" class="form-label fw-semibold">Description:</label>
+          <!-- CKEditor textarea -->
+          <textarea id="terms_editor" rows="6" placeholder="Enter terms and conditions..."><%- terms_info[0].terms_description %></textarea>
+          <!-- Hidden input to store CKEditor data -->
+          <input type="hidden" name="terms_description" id="terms_content" required>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save me-1"></i> Update Terms
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+
+  <!-- CKEditor CDN -->
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+<script>
+  let termsEditor;
+
+  ClassicEditor
+    .create(document.querySelector('#terms_editor'), {
+      toolbar: [
+        'heading', '|', 'bold', 'italic', 'link',
+        'bulletedList', 'numberedList', 'blockQuote',
+        '|', 'insertTable', 'mediaEmbed', 'undo', 'redo'
+      ]
+    })
+    .then(editor => {
+      termsEditor = editor;
+    })
+    .catch(error => {
+      console.error('CKEditor error:', error);
+    });
+
+  // Ensure CKEditor content is synced on form submit
+  document.getElementById('termsForm').addEventListener('submit', function(event) {
+    if (termsEditor) {
+      document.getElementById('terms_content').value = termsEditor.getData();
+    }
+  });
+</script>
+
+
+<%- include("footer.ejs") %>

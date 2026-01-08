@@ -1,0 +1,175 @@
+<%- include("navbar.ejs") %>
+
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-5 col-md-7">
+        <div class="card shadow-lg border-0">
+          <div class="card-body p-5">
+            
+            <!-- Header -->
+            <div class="text-center mb-4">
+              <i class="bi bi-shield-lock-fill text-primary" style="font-size: 3rem;"></i>
+              <h2 class="mt-3 mb-2">Verify OTP</h2>
+              <p class="text-muted">Enter the 6-digit code sent to your email</p>
+              
+              <% if (error) { %>
+                <div class="alert alert-danger">
+                  <%= error %>
+                </div>
+              <% } %>
+            </div>
+
+            <!-- OTP Form -->
+            <form method="POST" action="/verify-otp" id="otp-form" novalidate>
+              <input type="hidden" name="email" value="<%= email %>">
+              <input type="hidden" name="otp" id="combined-otp">
+
+              <div class="d-flex justify-content-between mb-3">
+                <% for(let i=0; i<6; i++) { %>
+                  <input 
+                    type="text" 
+                    name="otp<%= i %>" 
+                    class="form-control text-center fw-bold otp-input" 
+                    maxlength="1" 
+                    required
+                    inputmode="numeric" 
+                    pattern="\d*" 
+                    aria-label="OTP digit <%= i+1 %>"
+                    style="width: 3rem; font-size: 1.5rem;" autocomplete="off">
+                <% } %>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 btn-lg mb-3" disabled id="verify-btn">
+                <i class="bi bi-check-circle me-2"></i> Verify OTP
+              </button>
+            </form>
+
+            <!-- Timer & Resend OTP -->
+            <div class="text-center">
+              <p class="text-muted small mb-0">
+                <span id="timer">02:00</span> minutes remaining
+              </p>
+              <p class="text-muted small mb-0 mt-1">
+                Didn’t receive the code? 
+                <a href="/resend-otp?email=<%= email %>" class="fw-semibold text-decoration-none disabled" id="resend-link">Resend OTP</a>
+              </p>
+              <small id="resend-feedback" class="text-success d-none">OTP sent!</small>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Terms & Policy -->
+        <div class="text-center mt-4">
+          <p class="text-muted small">
+            By verifying, you agree to our 
+            <a href="/terms" class="text-decoration-none">Terms of Service</a> 
+            and 
+            <a href="/privacy" class="text-decoration-none">Privacy Policy</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include("footer.ejs") %>
+
+<script>
+  const inputs = document.querySelectorAll('.otp-input');
+  const verifyBtn = document.getElementById('verify-btn');
+  const combinedOtpInput = document.getElementById('combined-otp');
+  const resendLink = document.getElementById('resend-link');
+  const resendFeedback = document.getElementById('resend-feedback');
+  const timerDisplay = document.getElementById('timer');
+
+  // Auto-focus & backspace support
+  inputs.forEach((input, index) => {
+    input.addEventListener('input', () => {
+      input.value = input.value.replace(/\D/, ''); // numeric only
+      if(input.value.length === 1 && index < inputs.length - 1) {
+        inputs[index + 1].focus();
+      }
+      updateOtpAndButton();
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if(e.key === "Backspace" && !input.value && index > 0) {
+        inputs[index - 1].focus();
+      }
+    });
+
+    input.addEventListener('paste', (e) => {
+      const pasteData = e.clipboardData.getData('text').trim();
+      if(/^\d{6}$/.test(pasteData)) {
+        inputs.forEach((i, idx) => i.value = pasteData[idx]);
+        updateOtpAndButton();
+        e.preventDefault();
+      }
+    });
+  });
+
+  function updateOtpAndButton() {
+    const otpValue = Array.from(inputs).map(i => i.value).join('');
+    combinedOtpInput.value = otpValue;
+    verifyBtn.disabled = otpValue.length < 6;
+  }
+
+  // Timer logic (5 minutes)
+  let timeLeft = 2 * 60; // 5 minutes in seconds
+  const timerInterval = setInterval(() => {
+    const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+    const seconds = String(timeLeft % 60).padStart(2, '0');
+    timerDisplay.textContent = `${minutes}:${seconds}`;
+
+    if(timeLeft <= 0) {
+      clearInterval(timerInterval);
+      resendLink.classList.remove('disabled');
+      timerDisplay.textContent = '00:00';
+    }
+
+    timeLeft--;
+  }, 1000);
+
+  // Resend feedback
+  resendLink.addEventListener('click', (e) => {
+    if(resendLink.classList.contains('disabled')) {
+      e.preventDefault();
+      return;
+    }
+    resendFeedback.classList.remove('d-none');
+    setTimeout(() => resendFeedback.classList.add('d-none'), 3000);
+    resendLink.classList.add('disabled');
+    timeLeft = 5 * 60; // reset timer
+    startTimer();
+  });
+
+  function startTimer() {
+    clearInterval(timerInterval);
+    const interval = setInterval(() => {
+      const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+      const seconds = String(timeLeft % 60).padStart(2, '0');
+      timerDisplay.textContent = `${minutes}:${seconds}`;
+
+      if(timeLeft <= 0) {
+        clearInterval(interval);
+        resendLink.classList.remove('disabled');
+        timerDisplay.textContent = '00:00';
+      }
+
+      timeLeft--;
+    }, 1000);
+  }
+</script>
+
+<style>
+  .otp-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+  }
+  .disabled {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+</style>

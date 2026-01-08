@@ -1,0 +1,99 @@
+<%- include("navbar.ejs") %>
+
+<div class="container my-4">
+  <form id="termsForm" action="/admin/save_terms" method="post">
+    <div class="card shadow-sm">
+      <div class="card-body">
+
+        <!-- Header -->
+        <h3 class="mb-3">Manage Terms & Conditions</h3>
+        <small class="text-muted d-block mb-4">Add or update Terms & Conditions for the website</small>
+
+        <div class="mb-3">
+          <label for="terms_title" class="form-label fw-semibold">Title:</label>
+          <input type="text" name="terms_title" id="terms_title" class="form-control" placeholder="Enter title..." autocomplete="off" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="terms_editor" class="form-label fw-semibold">Description:</label>
+          <!-- CKEditor textarea -->
+          <textarea id="terms_editor" rows="6" placeholder="Enter terms and conditions..."></textarea>
+          <!-- Hidden input to store CKEditor data -->
+          <input type="hidden" name="terms_description" id="terms_content" required>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save me-1"></i> Save Terms
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+
+  <!-- Terms Table -->
+  <div class="mt-4">
+    <table class="table table-bordered table-striped table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i=0; i < terms.length; i++) { %>
+          <tr>
+            <td><%= i + 1 %></td>
+            <td><%= terms[i].terms_title %></td>
+            <td>
+              <%- terms[i].terms_description.split(' ').slice(0, 12).join(' ') %>
+              <%- terms[i].terms_description.split(' ').length > 12 ? '...' : '' %>
+            </td>
+            <td>
+              <a href="/admin/edit_terms/<%= terms[i].terms_id %>" class="btn btn-sm btn-primary">
+                <i class="bi bi-pencil-square"></i>
+              </a>
+              <a href="/admin/delete_terms/<%= terms[i].terms_id %>" class="btn btn-sm btn-danger">
+                <i class="bi bi-trash"></i>
+              </a>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CKEditor CDN -->
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+<script>
+  let termsEditor;
+
+  ClassicEditor
+    .create(document.querySelector('#terms_editor'), {
+      toolbar: [
+        'heading', '|', 'bold', 'italic', 'link',
+        'bulletedList', 'numberedList', 'blockQuote',
+        '|', 'insertTable', 'mediaEmbed', 'undo', 'redo'
+      ]
+    })
+    .then(editor => {
+      termsEditor = editor;
+    })
+    .catch(error => {
+      console.error('CKEditor error:', error);
+    });
+
+  // Ensure CKEditor content is synced on form submit
+  document.getElementById('termsForm').addEventListener('submit', function(event) {
+    if (termsEditor) {
+      document.getElementById('terms_content').value = termsEditor.getData();
+    }
+  });
+</script>
+
+<%- include("footer.ejs") %>

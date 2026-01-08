@@ -1,0 +1,174 @@
+<%- include("navbar.ejs") %>
+
+    <!-- Breadcrumbs -->
+    <section class="breadcrumb-section py-3 bg-light">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/profile">My Profile</a></li>
+                    <li class="breadcrumb-item active">Invoice</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Invoice Section -->
+    <section class="invoice-section py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="invoice">
+                        <!-- Invoice Header -->
+                        <div class="invoice-header d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="invoice-logo">ElectroStore</div>
+                                <p class="text-muted mb-0">Premium Electronics & Gadgets</p>
+                            </div>
+                            <div class="text-end">
+                                <h4 class="mb-1">INVOICE</h4>
+                                <p class="text-muted mb-0">#ES-2024-001</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Invoice Details -->
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Bill To:</h6>
+                                <address class="mb-0">
+                                    <strong>John Doe</strong><br>
+                                    123 Main Street<br>
+                                    New York, NY 10001<br>
+                                    United States<br>
+                                    <br>
+                                    <strong>Email:</strong> john.doe@email.com<br>
+                                    <strong>Phone:</strong> +1 (555) 123-4567
+                                </address>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Invoice Details:</h6>
+                                <p class="mb-1"><strong>Invoice Date:</strong> December 15, 2024</p>
+                                <p class="mb-1"><strong>Order Date:</strong> December 15, 2024</p>
+                                <p class="mb-1"><strong>Payment Method:</strong> Credit Card</p>
+                                <p class="mb-1"><strong>Order Status:</strong> <span class="badge bg-success">Delivered</span></p>
+                            </div>
+                        </div>
+                        
+                        <!-- Order Items -->
+                        <div class="table-responsive mt-4">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Description</th>
+                                        <th>Qty</th>
+                                        <th>Unit Price</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                                                 class="img-fluid" style="width: 60px; height: 60px; object-fit: cover;" alt="iPhone 15 Pro">
+                                        </td>
+                                        <td>
+                                            <strong>iPhone 15 Pro</strong><br>
+                                            <small class="text-muted">256GB • Natural Titanium</small>
+                                        </td>
+                                        <td>1</td>
+                                        <td>$999.00</td>
+                                        <td>$999.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                                                 class="img-fluid" style="width: 60px; height: 60px; object-fit: cover;" alt="AirPods Pro 2">
+                                        </td>
+                                        <td>
+                                            <strong>AirPods Pro 2</strong><br>
+                                            <small class="text-muted">White • Active Noise Cancellation</small>
+                                        </td>
+                                        <td>1</td>
+                                        <td>$249.00</td>
+                                        <td>$249.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Invoice Totals -->
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Shipping Address:</h6>
+                                <address class="mb-0">
+                                    John Doe<br>
+                                    123 Main Street<br>
+                                    New York, NY 10001<br>
+                                    United States
+                                </address>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Subtotal:</strong></td>
+                                                <td class="text-end">$1,248.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Shipping:</strong></td>
+                                                <td class="text-end text-success">Free</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Tax:</strong></td>
+                                                <td class="text-end">$99.84</td>
+                                            </tr>
+                                            <tr class="table-active">
+                                                <td><strong>Total:</strong></td>
+                                                <td class="text-end"><strong>$1,347.84</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Invoice Footer -->
+                        <div class="mt-5 pt-4 border-top">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Payment Information:</h6>
+                                    <p class="mb-1"><strong>Payment Method:</strong> Credit Card ending in 1234</p>
+                                    <p class="mb-1"><strong>Transaction ID:</strong> TXN-2024-001234</p>
+                                    <p class="mb-0"><strong>Payment Date:</strong> December 15, 2024</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Thank you for your business!</h6>
+                                    <p class="text-muted mb-0">
+                                        If you have any questions about this invoice, please contact our customer service team.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary me-2" onclick="window.print()">
+                            <i class="bi bi-printer me-2"></i>Print Invoice
+                        </button>
+                        <button class="btn btn-outline-primary me-2" onclick="downloadPDF()">
+                            <i class="bi bi-download me-2"></i>Download PDF
+                        </button>
+                        <a href="/profile-orders" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-2"></i>Back to Orders
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<%- include("footer.ejs") %>

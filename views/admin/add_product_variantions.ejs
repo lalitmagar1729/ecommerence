@@ -1,0 +1,141 @@
+<%- include("navbar.ejs") %>
+
+<form action="/admin/save_product_variations" method="POST" enctype="multipart/form-data">
+  <!-- Hidden Product ID -->
+  <input type="hidden" name="product_id" value="<%= products[0].product_id %>">
+
+  <div class="container bg-white p-4 rounded shadow-sm">
+    <!-- Page Title -->
+    <div class="row mb-3">
+      <div class="col">
+        <h4 class="fw-bold mb-0">
+          Add Product Variation for: 
+          <span class="text-primary"><%= products[0].product_name %></span>
+        </h4>
+        <hr>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <!-- Variation Title -->
+      <div class="col-md-6">
+        <label for="variation_title" class="form-label">Variation Title</label>
+        <input type="text" 
+               class="form-control" 
+               id="variation_title" 
+               name="variation_title" 
+               placeholder="e.g., 6GB / 128GB, 8GB / 256GB" 
+               required>
+      </div>
+
+      <!-- Variation Market Price -->
+      <div class="col-md-6">
+        <label for="variation_market_price" class="form-label">Market Price</label>
+        <div class="input-group">
+          <span class="input-group-text">₹</span>
+          <input type="number" 
+                 step="0.01" 
+                 class="form-control" 
+                 id="variation_market_price" 
+                 name="variation_market_price" 
+                 placeholder="Enter Market Price" 
+                 required>
+        </div>
+      </div>
+
+      <!-- Variation Price -->
+      <div class="col-md-6">
+        <label for="variation_price" class="form-label">Selling Price</label>
+        <div class="input-group">
+          <span class="input-group-text">₹</span>
+          <input type="number" 
+                 step="0.01" 
+                 class="form-control" 
+                 id="variation_price" 
+                 name="variation_price" 
+                 placeholder="Enter Selling Price" 
+                 required>
+        </div>
+      </div>
+
+      <!-- Available Stock -->
+      <div class="col-md-6">
+        <label for="available_stock" class="form-label">Available Stock</label>
+        <input type="number" 
+               min="0" 
+               class="form-control" 
+               id="available_stock" 
+               name="available_stock" 
+               placeholder="Enter Available Stock" 
+               required>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mt-4">
+      <div class="col d-flex justify-content-between">
+        <a href="/admin/products_list" class="btn btn-outline-secondary">
+          <i class="bi bi-arrow-left-circle me-1"></i> Back to Products List
+        </a>
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-save me-1"></i> Save Variation
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- Create Table for Showing List for Variation Added -->
+
+<div class="container bg-white rounded-2 shadow-sm my-4 p-4">
+  <div class="row mb-3">
+    <div class="col">
+      <h4 class="fw-bold mb-0">Existing Variations:</h4>
+      <hr>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Variation Title</th>
+        <th>Market Price</th>
+        <th>Selling Price</th>
+        <th>Available Stock</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(var i = 0; i < product_variations.length; i++) { %>
+        <tr>
+          <td><%= product_variations[i].variation_title %></td>
+          <td>₹ <%= product_variations[i].variation_market_price %></td>
+          <td>₹ <%= product_variations[i].variation_price %></td>
+          <td><%= product_variations[i].available_stock %></td>
+          <td>
+            <!-- Edit Button -->
+            <a href="/admin/edit_product_variation/<%= product_variations[i].products_variation_id %>" 
+               class="btn btn-sm btn-warning me-1" 
+               title="Edit">
+              <i class="bi bi-pencil-square"></i>
+            </a>
+            <!-- Delete Button -->
+            <a href="/admin/delete_product_variation/<%= product_variations[i].products_variation_id %>" 
+               class="btn btn-sm btn-danger delete-variation-btn" 
+               title="Delete"
+               data-id="<%= product_variations[i].products_variation_id %>">
+              <i class="bi bi-trash"></i>
+            </a>
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
+<%- include("footer.ejs") %>
+
+
+
+
+

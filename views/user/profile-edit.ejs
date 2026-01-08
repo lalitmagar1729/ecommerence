@@ -1,0 +1,158 @@
+<%- include("navbar.ejs") %>
+
+
+    <!-- Breadcrumbs -->
+    <section class="breadcrumb-section py-3 bg-light">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/profile">My Profile</a></li>
+                    <li class="breadcrumb-item active">Edit Profile</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Edit Profile Section -->
+    <section class="edit-profile-section py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Profile Sidebar -->
+                <div class="col-lg-3">
+                    <div class="profile-card mb-4">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                             class="profile-avatar" alt="Profile Picture">
+                        <h4 class="mb-1"><%= user[0].first_name %> <%= user[0].last_name %></h4>
+                        <p class="text-muted mb-3"><%= user[0].email %></p>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary btn-sm" onclick="document.getElementById('profileImage').click()">
+                                <i class="bi bi-camera me-2"></i>Change Photo
+                            </button>
+                            <input type="file" id="profileImage" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <div class="profile-menu">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile">
+                                    <i class="bi bi-person me-2"></i>Profile Overview
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/profile-edit">
+                                    <i class="bi bi-pencil me-2"></i>Edit Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile-password">
+                                    <i class="bi bi-lock me-2"></i>Change Password
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile-orders">
+                                    <i class="bi bi-box-seam me-2"></i>My Orders
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile-invoice">
+                                    <i class="bi bi-receipt me-2"></i>Invoices
+                                </a>
+                            </li>
+                           
+                            <li class="nav-item">
+                                <a class="nav-link" href="/wishlist">
+                                    <i class="bi bi-heart me-2"></i>Wishlist
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/terms">
+                                    <i class="bi bi-file-text me-2"></i>Terms & Conditions
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Edit Profile Content -->
+                <div class="col-lg-9">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="bi bi-pencil me-2"></i>Edit Profile Information
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form  action="/update_profile" method="post" class="needs-validation" novalidate>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="firstName" class="form-label">First Name *</label>
+                                        <input type="text" name="first_name" class="form-control" id="firstName" value="<%= user[0].first_name %>" required>
+                                        <div class="invalid-feedback">
+                                            Please provide your first name.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="lastName" class="form-label">Last Name *</label>
+                                        <input type="text" name="last_name" class="form-control" id="lastName" value="<%= user[0].last_name %>" required>
+                                        <div class="invalid-feedback">
+                                            Please provide your last name.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address *</label>
+                                    <input type="email" name="email" class="form-control" id="email" value="<%= user[0].email %>" required>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid email address.
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone Number *</label>
+                                    <input type="tel" name="phone" class="form-control" id="phone" value="<%= user[0].phone %>" pattern="[0-9]{10}" required>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid phone number.
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="birthDate" class="form-label">Date of Birth</label>
+                                    <input type="date" name="date_of_birth" class="form-control" id="birthDate" value="<%= user[0].date_of_birth.toLocaleDateString('en-CA') %>">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="gender" class="form-label">Gender</label>
+                                    <select class="form-select" id="gender">
+                                        <option value="">Select Gender</option>
+                                        <option value="male" selected>Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="bio" class="form-label">Bio</label>
+                                    <textarea class="form-control" id="bio" rows="3" placeholder="Tell us about yourself...">Tech enthusiast and gadget lover. Always looking for the latest innovations in electronics.</textarea>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <a href="/profile" class="btn btn-outline-secondary">
+                                        <i class="bi bi-arrow-left me-2"></i>Cancel
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-check-lg me-2"></i>Save Changes
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<%- include("footer.ejs") %>

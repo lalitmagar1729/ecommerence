@@ -1,0 +1,82 @@
+<%- include("navbar.ejs") %>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+
+        <!-- Header -->
+        <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">
+          <h3 class="mb-0 fw-bold">🧾 Order Details</h3>
+          <small class="d-block mt-1">Thank you for shopping with us!</small>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body p-4">
+
+          <!-- Customer Info -->
+          <div class="mb-4">
+          <h5 class="text-primary fw-bold">
+            <i class="bi bi-person-circle me-2"></i> Customer Information
+          </h5>
+          <p class="mb-1">
+            <i class="bi bi-person-fill me-2 text-secondary"></i>
+            <strong>Name:</strong> <%= order[0].first_name %> <%= order[0].last_name %>
+          </p>
+          <p class="mb-1">
+            <i class="bi bi-envelope-fill me-2 text-secondary"></i>
+            <strong>Email:</strong> <%= order[0].email %>
+          </p>
+          <p class="mb-1">
+            <i class="bi bi-telephone-fill me-2 text-secondary"></i>
+            <strong>Phone:</strong> <%= order[0].phone %>
+          </p>
+        </div>
+
+
+          <!-- Address Info -->
+          <div class="mb-4">
+            <h5 class="text-primary fw-bold">📍 Shipping Address</h5>
+            <p class="mb-1"><%= order[0].address %></p>
+            <p class="mb-1"><%= order[0].city %>, <%= order[0].state %> - <%= order[0].zipCode %></p>
+          </div>
+
+          <!-- Total Amount -->
+          <div class="text-center my-4 p-3 bg-light rounded-3 shadow-sm">
+            <h4 class="fw-bold mb-0" style="color:#2563eb;">
+               Total Amount: ₹ <%= order[0].total_amount %>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "rzp_test_GmXyAFAK01Uo7t", // Enter the Key ID generated from the Dashboard
+    "amount": "<%= order[0].total_amount * 100 %>", // Amount is in currency subunits. 
+    "currency": "INR",
+    "name": "A2Z ElectroStore", //your business name
+    "description": "Test Transaction",
+    "image": "https://a2zithub.org/uploads/173114251034582044.png",
+    "callback_url": "http://localhost:1000/verify_payment/<%= order[0].order_id %>",
+    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+        "name": "<%= order[0].firstName %> <%= order[0].lastName %>", //your customer's name
+        "email": "<%= order[0].email %>",
+        "contact": "<%= order[0].phone %>" //Provide the customer's phone number for better conversion rates 
+    },
+    "notes": {
+        "address": "<%= order[0].address %>"
+    },
+    "theme": {
+        "color": "#2563eb"
+    }
+};
+var rzp1 = new Razorpay(options);
+    rzp1.open();
+</script>
+
+<%- include("footer.ejs") %>

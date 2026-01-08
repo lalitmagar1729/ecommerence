@@ -1,0 +1,86 @@
+<%- include("navbar.ejs") %>
+
+<form action="/admin/update_team_member" method="POST" enctype="multipart/form-data">
+  <div class="container bg-white p-4 rounded shadow-sm mb-4">
+    <!-- Page Title -->
+    <div class="row mb-3">
+      <div class="col">
+        <h4 class="fw-bold mb-0">
+          Add Team Member
+        </h4>
+        <hr>
+      </div>
+    </div>
+
+    <!-- hidden -->
+     <input type="hidden" name="member_id" value="<%= member_info[0].member_id %>">
+
+    <div class="row g-3">
+      <!-- Team Image -->
+      <div class="col-md-6">
+        <label for="team_image" class="form-label">Team Member Image</label>
+        <input type="file"
+               class="form-control"
+               id="team_image"
+               name="member_image">
+      </div>
+
+    <div class="col-md-6 d-flex justify-content-center align-items-center">
+      <div class="team-image-wrapper position-relative overflow-hidden rounded shadow-sm"
+          style="width: 150px; height: 150px;">
+        <img src="/uploads/team/<%= member_info[0].member_image %>" 
+            alt="Team Member Image" 
+            class="img-fluid w-100 h-100 object-fit-cover">
+      </div>
+    </div>
+
+
+      <!-- Name -->
+      <div class="col-md-6">
+        <label for="team_name" class="form-label">Name</label>
+        <input type="text"
+               class="form-control"
+               id="team_name"
+               name="member_name"
+               placeholder="Enter name"
+               value="<%= member_info[0].member_name %>"
+               required>
+      </div>
+
+      <!-- Position -->
+      <div class="col-md-6">
+        <label for="team_position" class="form-label">Position</label>
+        <input type="text"
+               class="form-control"
+               id="team_position"
+               name="member_position"
+               placeholder="e.g., CEO, Developer"
+               value="<%= member_info[0].member_position %>"
+               required>
+      </div>
+
+      <!-- Description -->
+      <div class="col-12">
+        <label for="team_description" class="form-label">Description</label>
+        <textarea class="form-control"
+                  id="team_description"
+                  name="member_description"
+                  rows="2"
+                  placeholder="Enter short bio or description"
+                  required><%= member_info[0].member_description %></textarea>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mt-4">
+      <div class="col text-center">
+        <button type="submit" class="btn btn-primary btn-save">
+          <i class="bi bi-save me-1"></i> Update Team Member
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<%- include("footer.ejs") %>

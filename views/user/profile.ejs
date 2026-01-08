@@ -1,0 +1,241 @@
+<%- include("navbar.ejs") %>
+
+    <!-- Breadcrumbs -->
+    <section class="breadcrumb-section py-3 bg-light">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">My Profile</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section class="profile-section py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Profile Sidebar -->
+                <div class="col-lg-3">
+                    <div class="profile-card mb-4">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                             class="profile-avatar" alt="Profile Picture">
+                        <h4 class="mb-1"><%= user[0].first_name %> <%= user[0].last_name %></h4>
+                        <p class="text-muted mb-3"><%= user[0].email %></p>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-pencil me-2"></i>Edit Profile
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-menu">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/profile">
+                                    <i class="bi bi-person me-2"></i>Profile Overview
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile-edit">
+                                    <i class="bi bi-pencil me-2"></i>Edit Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile-password">
+                                    <i class="bi bi-lock me-2"></i>Change Password
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile-orders">
+                                    <i class="bi bi-box-seam me-2"></i>My Orders
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile-invoice">
+                                    <i class="bi bi-receipt me-2"></i>Invoices
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/wishlist">
+                                    <i class="bi bi-heart me-2"></i>Wishlist
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/terms">
+                                    <i class="bi bi-file-text me-2"></i>Terms & Conditions
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Profile Content -->
+                <div class="col-lg-9">
+                    <!-- Welcome Section -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="mb-3">Welcome back, <%= user[0].first_name %>!</h3>
+                            <p class="text-muted">Here's an overview of your account activity and recent orders.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Cards -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-box-seam text-primary mb-3" style="font-size: 2rem;"></i>
+                                    <h5 class="card-title"><%= user[0].total_orders %></h5>
+                                    <p class="text-muted">Total Orders</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-heart text-danger mb-3" style="font-size: 2rem;"></i>
+                                    <h5 class="card-title">8</h5>
+                                    <p class="text-muted">Wishlist Items</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-star text-warning mb-3" style="font-size: 2rem;"></i>
+                                    <h5 class="card-title">4.8</h5>
+                                    <p class="text-muted">Average Rating</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-currency-rupee text-success mb-3" style="font-size: 2rem;"></i>
+                                    <h5 class="card-title"><%= user[0].total_amount.toLocaleString('en-IN', { style: 'currency', currency: 'INR' }) %></h5>
+                                    <p class="text-muted">Total Spent</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Orders -->
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Recent Orders</h5>
+                            <a href="/profile-orders" class="btn btn-outline-primary btn-sm">View All</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Date</th>
+                                            <th>Items</th>
+                                            <th>Total</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+  <% for (var i = 0; i < ordersArray.length; i++) { %>
+    <% var order = ordersArray[i]; %>
+    <tr>
+      <td><%= order.order_id %></td>
+      <td>
+        <%= order.order_date 
+              ? new Date(order.order_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) 
+              : "Not Available" %>
+      </td>
+      <td>
+        <%= order.products.map(p => p.product_name).join(", ") %>
+      </td>
+      <td>
+  ₹ <%= order.products.reduce((sum, p) => {
+        let price = Number(p.product_price) || 0;
+        let qty = Number(p.product_quantity) || 1;
+        return sum + (price * qty);
+      }, 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+</td>
+
+
+      <td>
+        <span class="badge 
+          <%= order.order_status === 'delivered' ? 'bg-success' : 
+              order.order_status === 'pending' ? 'bg-warning text-dark' :
+              order.order_status === 'cancelled' ? 'bg-danger' : 'bg-secondary' %>">
+          <%= order.order_status 
+                ? order.order_status.charAt(0).toUpperCase() + order.order_status.slice(1) 
+                : 'Unknown' %>
+        </span>
+      </td>
+      <td>
+        <a href="/profile-invoice/<%= order.order_id %>" class="btn btn-outline-primary btn-sm">View</a>
+      </td>
+    </tr>
+  <% } %>
+</tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Quick Actions</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <a href="/profile-edit" class="btn btn-outline-primary w-100">
+                                        <i class="bi bi-pencil me-2"></i>Edit Profile
+                                    </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="/profile-addresses" class="btn btn-outline-primary w-100">
+                                        <i class="bi bi-geo-alt me-2"></i>Manage Addresses
+                                    </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="/wishlist" class="btn btn-outline-primary w-100">
+                                        <i class="bi bi-heart me-2"></i>View Wishlist
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Account Information -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Account Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Personal Information</h6>
+                                    <p class="text-muted mb-1"><strong>Name:</strong> <%= user[0].first_name %> <%= user[0].last_name %></p>
+                                    <p class="text-muted mb-1"><strong>Email:</strong> <%= user[0].email %></p>
+                                    <p class="text-muted mb-1"><strong>Phone:</strong> +91 <%= user[0].phone %></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Account Status</h6>
+                                    <p class="text-muted mb-1"><strong>Status:</strong> <span class="text-success">Active</span></p>
+                                    <p class="text-muted mb-1"><strong>Email Verified:</strong> <span class="text-success">Yes</span></p>
+                                    <p class="text-muted mb-1"><strong>Phone Verified:</strong> <span class="text-success">Yes</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<%- include("footer.ejs") %>

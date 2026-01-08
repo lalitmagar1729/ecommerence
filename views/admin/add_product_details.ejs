@@ -1,0 +1,123 @@
+<%- include("navbar.ejs") %>
+
+<style>
+  body { background-color: #fff; color: #212529; font-family: Arial, sans-serif; }
+  .container { padding: 20px; border: 1px solid #ddd; border-radius: 6px; }
+  h3 { color: #212529; font-weight: normal; margin-bottom: 15px; }
+  .nav-tabs { border-bottom: 1px solid #ccc; }
+  .nav-tabs .nav-link { color: #000; font-weight: normal; background-color: #f8f8f8; margin-right: 2px; border-radius: 4px 4px 0 0; }
+  .nav-tabs .nav-link.active { background-color: #fff; border-color: #ccc #ccc #fff; font-weight: bold; }
+  .form-control { border-radius: 4px; border: 1px solid #ccc; }
+  .form-control:focus { border-color: #999; box-shadow: none; }
+  .tab-content { padding-top: 10px; }
+  .table { font-size: 14px; }
+  .btn { font-size: 13px; padding: 4px 10px; }
+</style>
+
+<div class="container my-3">
+  <h3>Product: <%= info[0].product_name %></h3>
+
+  <ul class="nav nav-tabs" id="productTabs" role="tablist">
+    <li class="nav-item">
+      <button class="nav-link active" id="description-tab-btn" data-bs-toggle="tab" data-bs-target="#description-tab" type="button">Description</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" id="specifications-tab-btn" data-bs-toggle="tab" data-bs-target="#specifications-tab" type="button">Specifications</button>
+    </li>
+  </ul>
+
+  <div class="tab-content mt-2">
+
+    <!-- Description Form -->
+    <div class="tab-pane fade show active" id="description-tab">
+      <form action="/admin/save_description" method="POST">
+        <input type="hidden" name="product_id" value="<%= info[0].product_id %>">
+
+        <div class="mb-2">
+          <input type="text" name="description_title" class="form-control" placeholder="Title" required>
+        </div>
+        <div class="mb-2">
+          <textarea name="description_content" class="form-control" placeholder="Description" rows="4" required></textarea>
+        </div>
+        <div class="text-center mb-2">
+          <button type="submit" class="btn btn-primary">Save Description</button>
+        </div>
+      </form>
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (descriptions && descriptions.length > 0) { %>
+            <% for(var i=0; i < descriptions.length; i++) { %>
+              <tr>
+                <td><%= i+1 %></td>
+                <td><%= descriptions[i].description_title %></td>
+                <td><%= descriptions[i].description_content.length > 50 ? descriptions[i].description_content.substring(0,100)+'...' : descriptions[i].description_content %></td>
+                <td>
+                  <a href="/admin/edit_description/<%= descriptions[i].prodesc_id %>" class="btn btn-sm btn-warning">Edit</a>
+                  <a href="/admin/delete_description/<%= descriptions[i].prodesc_id %>" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+              </tr>
+            <% } %>
+          <% } else { %>
+            <tr><td colspan="4" class="text-center text-muted">No Descriptions Found</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Specifications Form -->
+    <div class="tab-pane fade" id="specifications-tab">
+      <form action="/admin/save_specifications" method="POST">
+        <input type="hidden" name="product_id" value="<%= info[0].product_id %>">
+
+        <div class="mb-2">
+          <input type="text" name="spec_title" class="form-control" placeholder="Specification Title" required>
+        </div>
+        <div class="mb-2">
+          <input type="text" name="spec_description" class="form-control" placeholder="Specification Description" required>
+        </div>
+        <div class="text-center mb-2">
+          <button type="submit" class="btn btn-primary">Save Specifications</button>
+        </div>
+      </form>
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (specifications && specifications.length > 0) { %>
+            <% for(var i=0;i<specifications.length;i++) { %>
+              <tr>
+                <td><%= i+1 %></td>
+                <td><%= specifications[i].spec_title %></td>
+                <td><%= specifications[i].spec_description.length > 50 ? specifications[i].spec_description.substring(0,50)+'...' : specifications[i].spec_description %></td>
+                <td>
+                  <a href="/admin/edit_specification/<%= specifications[i].prospecif_id %>" class="btn btn-sm btn-warning">Edit</a>
+                  <a href="/admin/delete_specification/<%= specifications[i].prospecif_id %>" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+              </tr>
+            <% } %>
+          <% } else { %>
+            <tr><td colspan="4" class="text-center text-muted">No Specifications Found</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%- include("footer.ejs") %>

@@ -1,0 +1,88 @@
+<%- include("navbar.ejs") %>
+
+<div class="container bg-white p-4 rounded shadow-sm">
+  <% for(var i = 0; i < products.length; i++) { %>
+  <form action="/admin/update_product" method="POST" enctype="multipart/form-data" class="mb-5 p-3 border rounded">
+    <!-- Header -->
+    <div class="row mb-3">
+      <div class="col">
+        <h4 class="mb-1">Edit Product - <%= products[i].product_name %></h4>
+        <small class="text-muted">Update the product details below</small>
+      </div>
+    </div>
+
+    <input type="hidden" name="product_id" value="<%= products[i].product_id %>">
+
+    <!-- Product Fields -->
+    <div class="row g-3">
+
+      <div class="col-md-6">
+        <label for="category_id_<%= i %>" class="form-label fw-semibold">Select Category*</label>
+        <select name="category_id" class="form-select" id="category_id_<%= i %>" required>
+          <option value="" disabled>-- Select Category --</option>
+          <% for(var j = 0; j < categories.length; j++) { %>
+            <option value="<%= categories[j].category_id %>" <%= products[i].category_id == categories[j].category_id ? "selected" : "" %>><%= categories[j].category_name %></option>
+          <% } %>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label for="product_name_<%= i %>" class="form-label fw-semibold">Product Name*</label>
+        <input type="text" name="product_name" class="form-control" id="product_name_<%= i %>" placeholder="Enter product name" value="<%= products[i].product_name %>" required>
+      </div>
+
+      <div class="col-md-6">
+        <label for="product_brand_<%= i %>" class="form-label fw-semibold">Product Brand</label>
+        <input type="text" name="product_brand" class="form-control" id="product_brand_<%= i %>" placeholder="Enter product brand" value="<%= products[i].product_brand %>">
+      </div>
+
+      <div class="col-md-6">
+        <label for="product_details_<%= i %>" class="form-label fw-semibold">Product Details</label>
+        <textarea name="product_details" class="form-control" id="product_details_<%= i %>" rows="1"><%= products[i].product_details %></textarea>
+      </div>
+
+      <div class="col-md-6">
+        <label for="product_colors_<%= i %>" class="form-label fw-semibold">Available Colors</label>
+        <input type="text" name="product_colors" class="form-control" id="product_colors_<%= i %>" value="<%= products[i].product_colors %>">
+      </div>
+
+      <div class="col-md-6">
+        <label for="product_main_image_<%= i %>" class="form-label fw-semibold">Product Main Image</label>
+        <input type="file" name="product_main_image" class="form-control" id="product_main_image_<%= i %>" accept="image/*">
+        <% if(products[i].product_main_image) { %>
+          <small class="text-muted d-block mt-1">Current image: <%= products[i].product_main_image %></small>
+        <% } %>
+      </div>
+
+      <div class="col-md-6">
+        <label for="is_highlighted_<%= i %>" class="form-label fw-semibold">Highlighted?</label>
+        <select class="form-select" name="is_highlighted" id="is_highlighted_<%= i %>">
+          <option value="No" <%= products[i].is_highlighted == "No" ? "selected" : "" %>>No</option>
+          <option value="Yes" <%= products[i].is_highlighted == "Yes" ? "selected" : "" %>>Yes</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label for="is_most_selling_<%= i %>" class="form-label fw-semibold">Most Selling?</label>
+        <select class="form-select" name="is_most_selling" id="is_most_selling_<%= i %>">
+          <option value="No" <%= products[i].is_most_selling == "No" ? "selected" : "" %>>No</option>
+          <option value="Yes" <%= products[i].is_most_selling == "Yes" ? "selected" : "" %>>Yes</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="row mt-3">
+      <div class="col text-center">
+        <button type="submit" class="btn btn-primary px-4">
+          <i class="bi bi-pencil-square me-1"></i> Update Product
+        </button>
+      </div>
+    </div>
+
+  </form>
+  <% }; %>
+</div>
+
+
+<%- include("footer.ejs") %>

@@ -1,0 +1,103 @@
+<%- include("navbar.ejs") %>
+<form action="/admin/save_category" method="post" enctype="multipart/form-data">
+  <div class="container bg-white p-4 rounded shadow-sm">
+    
+    <!-- Header -->
+    <div class="row mb-4">
+      <div class="col">
+        <h3 class="mb-1">Manage Category</h3>
+        <small class="text-muted">Add or update a category for products</small>
+      </div>
+    </div>
+
+    <div class="row g-3 align-items-end">
+      
+      <!-- Category Name -->
+      <div class="col-md-6">
+        <label for="category_name" class="form-label fw-semibold">Category Name:</label>
+        <input type="text"  name="category_name" class="form-control" id="category_name" placeholder="Enter category name" required>
+      </div>
+
+      <!-- Category Description -->
+       <div class="col-md-6">
+        <label for="category_description" class="form-label fw-semibold">Category Description:</label>
+        <input type="text"  name="category_description" class="form-control" id="category_description" placeholder="Enter category description">
+      </div>
+
+      <!-- Category Image -->
+      <div class="col-md-6">
+        <label for="category_image" class="form-label fw-semibold">Category Image:</label>
+        <input type="file" name="category_image" accept="image/*" class="form-control" id="category_image">
+      </div>
+
+      <!-- Status -->
+      <div class="col-md-6">
+        <label for="category_status" class="form-label fw-semibold">Status:</label>
+        <select id="category_status" name="category_status" class="form-select">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+
+      <!-- Save Button -->
+      <div class="col-md-12 text-center">
+        <button type="submit" class="btn btn-sm btn-primary btn-save">
+          <i class="bi bi-save me-1"></i> Save Category
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="container bg-white p-4 rounded shadow-sm mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <h3 class="mb-1">Category List</h3>
+      <small class="text-muted">List of all categories</small>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th scope="col">Sr.No.</th>
+          <th scope="col">Category Name</th>
+          <th scope="col">Category Description</th>
+          <th scope="col">Category Image</th>
+          <th scope="col">Category Status</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i=0; i < result.length; i++) { %>
+          <tr>
+            <td><%= i + 1 %></td>
+            <td><%= result[i].category_name %></td>
+            <td><%= result[i].category_description %></td>
+            <td>
+              <img src="/uploads/category/<%= result[i].category_image %>" alt="Category Image" class="img-thumbnail" style="max-width: 100px;">
+            </td>
+            <td>
+              <% if (result[i].category_status === 'active') { %>
+                <span class="badge bg-success">Active</span>
+              <% } else { %>
+                <span class="badge bg-secondary">Inactive</span>
+              <% } %>
+            </td>
+            <td>
+              <a href="/admin/edit_category/<%= result[i].category_id %>" 
+                class="btn btn-sm btn-warning me-1 edit-btn">
+                <i class="bi bi-pencil-square"></i> Edit
+              </a>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+<%- include("footer.ejs") %>

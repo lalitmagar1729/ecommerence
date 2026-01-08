@@ -1,0 +1,269 @@
+<%- include("navbar.ejs") %>
+
+    <!-- Breadcrumbs -->
+    <section class="breadcrumb-section py-3 bg-light">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/profile">My Profile</a></li>
+                    <li class="breadcrumb-item active">Addresses</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Addresses Section -->
+    <section class="addresses-section py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Profile Sidebar -->
+                <div class="col-lg-3">
+                    <div class="profile-card mb-4">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                             class="profile-avatar" alt="Profile Picture">
+                        <h4 class="mb-1">John Doe</h4>
+                        <p class="text-muted mb-3">john.doe@email.com</p>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-camera me-2"></i>Change Photo
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-menu">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile">
+                                    <i class="bi bi-person me-2"></i>Profile Overview
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile-edit">
+                                    <i class="bi bi-pencil me-2"></i>Edit Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile-password">
+                                    <i class="bi bi-lock me-2"></i>Change Password
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile-orders">
+                                    <i class="bi bi-box-seam me-2"></i>My Orders
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile-invoice">
+                                    <i class="bi bi-receipt me-2"></i>Invoices
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/profile-addresses">
+                                    <i class="bi bi-geo-alt me-2"></i>Addresses
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/wishlist">
+                                    <i class="bi bi-heart me-2"></i>Wishlist
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/terms">
+                                    <i class="bi bi-file-text me-2"></i>Terms & Conditions
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Addresses Content -->
+                <div class="col-lg-9">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>Manage Addresses</h2>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                            <i class="bi bi-plus me-2"></i>Add New Address
+                        </button>
+                    </div>
+                    
+                    <!-- Address Cards -->
+                    <div class="row g-4">
+                        <!-- Default Address -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0">Home Address</h6>
+                                    <span class="badge bg-primary">Default</span>
+                                </div>
+                                <div class="card-body">
+                                    <address class="mb-3">
+                                        <strong>John Doe</strong><br>
+                                        123 Main Street<br>
+                                        New York, NY 10001<br>
+                                        United States
+                                    </address>
+                                    <p class="text-muted mb-3">
+                                        <i class="bi bi-telephone me-2"></i>+1 (555) 123-4567
+                                    </p>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-pencil me-1"></i>Edit
+                                        </button>
+                                        <button class="btn btn-outline-secondary btn-sm">
+                                            <i class="bi bi-trash me-1"></i>Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Work Address -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0">Work Address</h6>
+                                    <button class="btn btn-outline-primary btn-sm" onclick="setDefault(this)">
+                                        Set as Default
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <address class="mb-3">
+                                        <strong>John Doe</strong><br>
+                                        456 Business Ave<br>
+                                        Suite 200<br>
+                                        New York, NY 10002<br>
+                                        United States
+                                    </address>
+                                    <p class="text-muted mb-3">
+                                        <i class="bi bi-telephone me-2"></i>+1 (555) 987-6543
+                                    </p>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-pencil me-1"></i>Edit
+                                        </button>
+                                        <button class="btn btn-outline-secondary btn-sm">
+                                            <i class="bi bi-trash me-1"></i>Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Billing Address -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0">Billing Address</h6>
+                                    <button class="btn btn-outline-primary btn-sm" onclick="setDefault(this)">
+                                        Set as Default
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <address class="mb-3">
+                                        <strong>John Doe</strong><br>
+                                        789 Finance St<br>
+                                        New York, NY 10003<br>
+                                        United States
+                                    </address>
+                                    <p class="text-muted mb-3">
+                                        <i class="bi bi-telephone me-2"></i>+1 (555) 456-7890
+                                    </p>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-pencil me-1"></i>Edit
+                                        </button>
+                                        <button class="btn btn-outline-secondary btn-sm">
+                                            <i class="bi bi-trash me-1"></i>Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Address Modal -->
+    <div class="modal fade" id="addAddressModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="needs-validation" novalidate>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="addressType" class="form-label">Address Type *</label>
+                                <select class="form-select" id="addressType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="home">Home</option>
+                                    <option value="work">Work</option>
+                                    <option value="billing">Billing</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="fullName" class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="fullName" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="addressLine1" class="form-label">Address Line 1 *</label>
+                            <input type="text" class="form-control" id="addressLine1" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="addressLine2" class="form-label">Address Line 2</label>
+                            <input type="text" class="form-control" id="addressLine2">
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="city" class="form-label">City *</label>
+                                <input type="text" class="form-control" id="city" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="state" class="form-label">State *</label>
+                                <select class="form-select" id="state" required>
+                                    <option value="">Select State</option>
+                                    <option value="CA">California</option>
+                                    <option value="NY">New York</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="IL">Illinois</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="zipCode" class="form-label">ZIP Code *</label>
+                                <input type="text" class="form-control" id="zipCode" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number *</label>
+                            <input type="tel" class="form-control" id="phone" required>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="setAsDefault">
+                            <label class="form-check-label" for="setAsDefault">
+                                Set as default address
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveAddress()">Save Address</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<%- include("footer.ejs") %>

@@ -1,0 +1,130 @@
+<%- include("navbar.ejs") %>
+<form action="/admin/save_about" method="POST" enctype="multipart/form-data">
+  <div class="container bg-white p-4 rounded shadow-sm mb-4">
+    <!-- Page Title -->
+    <div class="row mb-3">
+      <div class="col">
+        <h4 class="fw-bold mb-0">
+          Add About Section
+        </h4>
+        <hr>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <!-- About Image -->
+      <div class="col-md-6">
+        <label for="about_image" class="form-label">About Image</label>
+        <input type="file"
+               class="form-control"
+               id="about_image"
+               name="about_image"
+               required>
+      </div>
+
+      <!-- About Title -->
+      <div class="col-md-6">
+        <label for="about_title" class="form-label">About Title</label>
+        <input type="text"
+               class="form-control"
+               id="about_title"
+               name="about_title"
+               placeholder="Enter about title"
+               required>
+      </div>
+
+      <!-- About Description -->
+      <div class="col-md-6">
+        <label for="about_description" class="form-label">About Description</label>
+        <textarea class="form-control"
+                  id="about_description"
+                  name="about_description"
+                  rows="1"
+                  placeholder="Enter about description"
+                  required></textarea>
+      </div>
+
+      <!-- Button Text -->
+      <div class="col-md-6">
+        <label for="about_button_text" class="form-label">Button Text</label>
+        <input type="text"
+               class="form-control"
+               id="about_button_text"
+               name="about_button_text"
+               placeholder="e.g., Learn More"
+               required>
+      </div>
+
+    </div>
+
+    <!-- Action Buttons -->
+<div class="row mt-4">
+  <div class="col text-center">
+    <button type="submit" class="btn btn-primary btn-save">
+      <i class="bi bi-save me-1"></i> <%= (about.length > 0) ? 'Update About' : 'Save About' %>
+    </button>
+  </div>
+</div>
+
+  </div>
+</form>
+
+<!-- Table for Existing About Sections -->
+<div class="container bg-white rounded-2 shadow-sm my-4 p-4">
+  <div class="row mb-3">
+    <div class="col">
+      <h4 class="fw-bold mb-0">Existing About Sections:</h4>
+      <hr>
+    </div>
+  </div>
+
+  <table class="table align-middle table-bordered table-hover">
+    <thead class="table-light">
+      <tr>
+        <th>Image</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Button Text</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (about && about.length > 0) { %>
+        <% for (var i = 0; i < about.length; i++) { %>
+          <tr>
+            <!-- Image -->
+            <td>
+              <img src="/uploads/about/<%= about[i].about_image %>" 
+                   alt="About Image" 
+                   width="100" 
+                   class="rounded">
+            </td>
+
+            <!-- Title -->
+            <td><%= about[i].about_title %></td>
+
+            <!-- Description (Truncated) -->
+            <td>
+              <span title="<%= about[i].about_description %>">
+                <%= about[i].about_description.length > 30 
+                    ? about[i].about_description.substring(0, 80) + "..." 
+                    : about[i].about_description %>
+              </span>
+            </td>
+
+            <!-- Button Text -->
+            <td><%= about[i].about_button_text %></td>
+          </tr>
+        <% } %>
+      <% } else { %>
+        <tr>
+          <td colspan="6" class="text-center text-muted py-3">
+            No About Sections Found
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
+
+<%- include("footer.ejs") %>

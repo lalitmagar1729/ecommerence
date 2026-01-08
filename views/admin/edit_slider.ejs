@@ -1,0 +1,132 @@
+<%- include("navbar.ejs") %>
+
+<form action="/admin/update_slider" method="POST" enctype="multipart/form-data">
+  <div class="container bg-white p-4 rounded shadow-sm mb-4">
+    
+    <!-- Page Header -->
+    <div class="row mb-3">
+      <div class="col">
+        <h4 class="fw-bold mb-0">Edit Slider</h4>
+        <hr>
+      </div>
+    </div>
+
+    <!-- Hidden Field for Slider ID -->
+    <input type="hidden" name="slider_id" value="<%= info[0].slider_id %>">
+
+    <!-- Form Fields -->
+    <div class="row g-4">
+      
+      <!-- Slider Image Upload -->
+      <div class="col-md-6">
+        <label for="slider_image" class="form-label fw-bold">Slider Image</label>
+        <input type="file" class="form-control" id="slider_image" name="slider_image" accept="image/*">
+      </div>
+
+      <!-- Slider Title -->
+      <div class="col-md-6">
+        <label for="slider_title" class="form-label fw-bold">Slider Title</label>
+        <input type="text" 
+               class="form-control" 
+               id="slider_title" 
+               name="slider_title"
+               value="<%= info[0].slider_title %>" 
+               required>
+      </div>
+
+      <!-- Existing Image Preview -->
+      <div class="col-md-6">
+        <% if (info[0].slider_image) { %>
+          <div id="existingImage">
+            <p class="small text-muted mb-1" id="existingText">Existing Image:</p>
+            <img src="/uploads/slider/<%= info[0].slider_image %>" 
+                 alt="Slider Image" 
+                 class="img-thumbnail" 
+                 style="max-height:120px; max-width:100%;">
+          </div>
+        <% } %>
+
+        <!-- New Image Preview -->
+        <div id="previewContainer" style="display:none;">
+          <p class="small text-muted mb-1">Preview New Image:</p>
+          <img id="previewImage" class="img-thumbnail" style="max-height:120px; max-width:100%;">
+        </div>
+      </div>
+
+      <!-- Slider Description -->
+      <div class="col-md-6">
+        <label for="slider_description" class="form-label fw-bold">Slider Description</label>
+        <textarea class="form-control" 
+                  id="slider_description" 
+                  name="slider_description" 
+                  rows="5"
+                  required><%= info[0].slider_description %></textarea>
+      </div>
+
+      <!-- Button Text -->
+      <div class="col-md-6">
+        <label for="slider_button_text" class="form-label fw-bold">Button Text</label>
+        <input type="text" 
+               class="form-control" 
+               id="slider_button_text" 
+               name="slider_button_text"
+               value="<%= info[0].slider_button_text %>">
+      </div>
+
+      <!-- Button Link -->
+      <div class="col-md-6">
+        <label for="slider_button_link" class="form-label fw-bold">Button Link</label>
+        <input type="url" 
+               class="form-control" 
+               id="slider_button_link" 
+               name="slider_button_link"
+               value="<%= info[0].slider_button_link %>">
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mt-4">
+      <div class="col d-flex justify-content-between align-items-center">
+        <!-- Cancel Button -->
+        <a href="/admin/slider" class="btn btn-secondary">
+          <i class="bi bi-arrow-left-circle me-1"></i> Cancel
+        </a>
+
+        <!-- Update Button -->
+        <button type="submit" class="btn btn-success">
+          <i class="bi bi-save me-1"></i> Update Slider
+        </button>
+      </div>
+    </div>
+
+  </div>
+</form>
+
+<script>
+  document.getElementById("slider_image")?.addEventListener("change", function (event) {
+    const file = event.target.files[0];
+    const existingImage = document.getElementById("existingImage");
+    const existingText = document.getElementById("existingText");
+    const previewContainer = document.getElementById("previewContainer");
+    const previewImage = document.getElementById("previewImage");
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        previewImage.src = e.target.result;
+        previewContainer.style.display = "block";
+        if (existingImage) existingImage.style.display = "none"; // hide old image
+        if (existingText) existingText.style.display = "none";   // hide text
+      };
+      reader.readAsDataURL(file);
+    } else {
+      previewContainer.style.display = "none";
+      previewImage.src = "";
+      if (existingImage) existingImage.style.display = "block"; // restore old image
+      if (existingText) existingText.style.display = "block";   // restore text
+    }
+  });
+</script>
+
+
+  <%- include("footer.ejs") %>

@@ -1,0 +1,108 @@
+<%- include("navbar.ejs") %>
+
+  <div class="container bg-white p-4 rounded shadow-sm my-0">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <div>
+          <h4 class="mb-1">
+            <i class="bi bi-file-earmark-plus"></i> Add Product Files
+          </h4>
+          <small class="text-white-50">Upload multiple files and select file type</small>
+        </div>
+        <div>
+          <span class="badge bg-warning text-dark fs-6 px-3 py-2 rounded-start">
+            <i class="bi bi-box-seam me-1"></i>
+          </span>
+          <span class="badge bg-light text-primary fs-6 px-3 py-2 rounded-end shadow-sm">
+            <%= result[0].product_name %>
+          </span>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <form action="/admin/save_product_files" method="POST" enctype="multipart/form-data">
+
+          <!-- Hidden Product ID -->
+          <input type="hidden" name="product_id" value="<%= result[0].product_id %>">
+
+          <!-- File Type -->
+          <div class="mb-3">
+            <label for="product_file_type" class="form-label fw-semibold">File Type</label>
+            <select name="product_file_type" id="product_file_type" class="form-select" required>
+              <option value="image" selected>Image</option>
+              <option value="video">Video</option>
+            </select>
+          </div>
+
+          <!-- File Upload -->
+          <div class="mb-3">
+            <label for="product_files" class="form-label fw-semibold">Upload Files :<small class="text-muted"></small></label>
+            <input type="file" name="product_files" id="product_files" class="form-control" required>
+            <small class="text-muted">You can upload multiple files (images, videos)</small>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="d-flex justify-content-end mt-4">
+            <button type="submit" class="btn btn-success px-4">
+              <i class="bi bi-check-circle me-1"></i> Upload Files
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Files List -->
+<div class="container bg-white p-4 rounded shadow-sm mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <h3 class="mb-1">Product Files</h3>
+      <small class="text-muted">List of all uploaded product files</small>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th scope="col">Sr.No.</th>
+          <th scope="col">File</th>
+          <th scope="col">File Type</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+  <% for (var i = 0; i < product_files.length; i++) { %>
+    <tr>
+      <td><%= i + 1 %></td>
+      <td>
+          <img src="/uploads/product_files/<%= product_files[i].product_files %>" 
+               alt="Product Image" 
+               class="img-thumbnail me-2 mb-2"
+               style="max-width: 100px;">
+      </td>
+      <td>
+        <span class="badge bg-info text-dark">
+          <%= product_files[i].product_file_type %>
+        </span>
+      </td>
+      <td>
+        <a href="/admin/edit_product_file/<%= product_files[i].product_file_id %>" 
+           class="btn btn-sm btn-warning me-1">
+          <i class="bi bi-pencil-square"></i> Edit
+        </a>
+        <a href="/admin/delete_product_file/<%= product_files[i].product_file_id %>" 
+           class="btn btn-sm btn-danger">
+          <i class="bi bi-trash"></i> Delete
+        </a>
+      </td>
+    </tr>
+  <% } %>
+</tbody>
+
+    </table>
+  </div>
+</div>
+
+
+  <%- include("footer.ejs") %>

@@ -1,0 +1,53 @@
+<%- include("navbar.ejs") %>
+
+    <!-- Breadcrumbs -->
+    <section class="breadcrumb-section py-3 bg-light">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">Terms & Conditions</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Terms Section -->
+    <section class="terms-section py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2>Terms & Conditions</h2>
+                    <p class="lead text-muted">Please read these terms carefully before using our website</p>
+                    <p class="text-muted">
+                    Last updated: <%= new Date(terms[0].updated_at).toLocaleString('en-US', { month: 'long', year: 'numeric' }) %>
+                    </p>
+
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card">
+                        <div class="card-body">
+                          <!-- 1. Acceptance of Terms -->
+                                <% for (var i = 0; i < terms.length; i++) { %>
+                                <div class="mb-5">
+                                    <h4><%= (i+1) + '. ' + terms[i].terms_title %></h4>
+                                    <p>
+                                    <%- terms[i].terms_description %>
+                                    </p>
+                                </div>
+                                <% } %>
+                            <!-- Agreement -->
+                            <div class="alert alert-info">
+                                <h5><i class="bi bi-info-circle me-2"></i>Agreement</h5>
+                                <p class="mb-0">By using our website, you acknowledge that you have read and understood these Terms & Conditions and agree to be bound by them.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<%- include("footer.ejs") %>

@@ -1,0 +1,143 @@
+<%- include("navbar.ejs") %>
+
+<form action="/admin/save_team_member" method="POST" enctype="multipart/form-data">
+  <div class="container bg-white p-4 rounded shadow-sm mb-4">
+    <!-- Page Title -->
+    <div class="row mb-3">
+      <div class="col">
+        <h4 class="fw-bold mb-0">
+          Add Team Member
+        </h4>
+        <hr>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <!-- Team Image -->
+      <div class="col-md-6">
+        <label for="team_image" class="form-label">Team Member Image</label>
+        <input type="file"
+               class="form-control"
+               id="team_image"
+               name="member_image"
+               required>
+      </div>
+
+      <!-- Name -->
+      <div class="col-md-6">
+        <label for="team_name" class="form-label">Name</label>
+        <input type="text"
+               class="form-control"
+               id="team_name"
+               name="member_name"
+               placeholder="Enter name"
+               required>
+      </div>
+
+      <!-- Position -->
+      <div class="col-md-6">
+        <label for="team_position" class="form-label">Position</label>
+        <input type="text"
+               class="form-control"
+               id="team_position"
+               name="member_position"
+               placeholder="e.g., CEO, Developer"
+               required>
+      </div>
+
+      <!-- Description -->
+      <div class="col-12">
+        <label for="team_description" class="form-label">Description</label>
+        <textarea class="form-control"
+                  id="team_description"
+                  name="member_description"
+                  rows="2"
+                  placeholder="Enter short bio or description"
+                  required></textarea>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mt-4">
+      <div class="col text-center">
+        <button type="submit" class="btn btn-primary btn-save">
+          <i class="bi bi-save me-1"></i> Save Team Member
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- Table for Existing Team Members -->
+<div class="container bg-white rounded-2 shadow-sm my-4 p-4">
+  <div class="row mb-3">
+    <div class="col">
+      <h4 class="fw-bold mb-0">Existing Team Members:</h4>
+      <hr>
+    </div>
+  </div>
+
+  <table class="table align-middle table-bordered table-hover">
+    <thead class="table-light">
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (team_members && team_members.length > 0) { %>
+        <% for (var i = 0; i < team_members.length; i++) { %>
+          <tr>
+            <!-- Image -->
+            <td>
+              <img src="/uploads/team/<%= team_members[i].member_image %>" 
+                   alt="Team Member" 
+                   width="100" 
+                   class="rounded">
+            </td>
+
+            <!-- Name -->
+            <td><%= team_members[i].member_name %></td>
+
+            <!-- Position -->
+            <td><%= team_members[i].member_position %></td>
+
+            <!-- Description (Truncated) -->
+            <td>
+              <span title="<%= team_members[i].member_description %>">
+                <%= team_members[i].member_description.length > 50 
+                    ? team_members[i].member_description.substring(0, 50) + "..." 
+                    : team_members[i].member_description %>
+              </span>
+            </td>
+
+            <!-- Actions -->
+            <td>
+              <a href="/admin/edit_team/<%= team_members[i].member_id %>"
+                 class="btn btn-sm btn-warning text-white me-2">
+                <i class="bi bi-pencil-square"></i>
+              </a>
+              <a href="/admin/delete_team/<%= team_members[i].member_id %>"
+                 class="btn btn-sm btn-danger">
+                <i class="bi bi-trash"></i>
+              </a>
+            </td>
+          </tr>
+        <% } %>
+      <% } else { %>
+        <tr>
+          <td colspan="5" class="text-center text-muted py-3">
+            No Team Members Found
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
+
+
+<%- include("footer.ejs") %>

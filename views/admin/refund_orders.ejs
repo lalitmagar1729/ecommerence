@@ -1,0 +1,68 @@
+<%- include("navbar.ejs") %>
+
+<div class="container bg-white p-4 rounded-2 shadow-sm">
+  <div class="row">
+    <!-- Heading -->
+    <div class="col-md-12 mb-3 d-flex justify-content-between align-items-center">
+  <h3 class="mb-0">Refund Orders</h3>
+  <span class="badge rounded-pill fs-6 fw-semibold text-white px-3 py-2 shadow-sm" 
+      style="background: linear-gradient(90deg, #4f46e5, #3b82f6);">
+  <i class="bi bi-bag-fill me-1"></i> <%= order.length %> Orders
+</span>
+
+</div>
+
+
+    <!-- Table -->
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle text-center mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Order ID</th>
+              <th>Refund Date</th>
+              <th>Address</th>
+              <th>Order Status</th>
+              <th>Total Amount(INR)</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (var i = 0; i < order.length; i++) { %>
+              <tr>
+                <td><%= order[i].order_id %></td>
+                <td><%= order[i].refund_date.toLocaleDateString('en-CA') %></td>
+                <td><%= order[i].address %></td>
+               <td>
+                <% if(order[i].order_status === 'pending') { %>
+                  <span class="badge bg-warning text-dark"><%= order[i].order_status %></span>
+                <% } else if(order[i].order_status === 'dispatch') { %>
+                  <span class="badge bg-primary"><%= order[i].order_status %></span>
+                <% } else if(order[i].order_status === 'delivered') { %>
+                  <span class="badge bg-success"><%= order[i].order_status %></span>
+                <% } else if(order[i].order_status === 'cancelled') { %>
+                  <span class="badge bg-danger"><%= order[i].order_status %></span>
+                <% } else if(order[i].order_status === 'return') { %>
+                  <span class="badge bg-info text-dark"><%= order[i].order_status %></span>
+                <% } else if(order[i].order_status === 'refund') { %>
+                  <span class="badge bg-secondary"><%= order[i].order_status %></span>
+                <% } else if(order[i].order_status === 'rejected') { %>
+                  <span class="badge bg-dark"><%= order[i].order_status %></span>
+                <% } else { %>
+                  <span class="badge bg-light text-dark"><%= order[i].order_status %></span>
+                <% } %>
+              </td>
+                <td>&#8377;<%= order[i].total_amount %></td>
+                <td>
+                  <a href="/admin/order_details/<%= order[i].order_id %>" class="btn btn-sm btn-primary btn-save ">Details</a>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("footer.ejs") %>

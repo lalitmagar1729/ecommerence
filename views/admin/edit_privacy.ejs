@@ -1,0 +1,69 @@
+<%- include("navbar.ejs") %>
+
+<div class="container my-4">
+  <form id="privacyForm" action="/admin/update_privacy" method="post">
+    <div class="card shadow-sm">
+      <div class="card-body">
+
+        <!-- Header -->
+        <h3 class="mb-3">Update Privacy Policy</h3>
+        <small class="text-muted d-block mb-4">Add or update the Privacy Policy for the website</small>
+
+        <!-- Hidden -->
+        <input type="hidden" name="privacy_id" value="<%= privacy_info[0].privacy_id %>">
+
+        <div class="mb-3">
+          <label for="privacy_title" class="form-label fw-semibold">Title:</label>
+          <input type="text" name="privacy_title" id="privacy_title" class="form-control" placeholder="Enter title..." value="<%= privacy_info[0].privacy_title %>" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="privacy_editor" class="form-label fw-semibold">Description:</label>
+          <!-- CKEditor textarea -->
+          <textarea id="privacy_editor" rows="6" placeholder="Enter privacy policy..."><%- privacy_info[0].privacy_description %></textarea>
+          <!-- Hidden input to store CKEditor data -->
+          <input type="hidden" name="privacy_description" id="privacy_content" required>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save me-1"></i> Update Privacy Policy
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+
+
+  <!-- CKEditor CDN -->
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+<script>
+  let privacyEditor;
+
+  ClassicEditor
+    .create(document.querySelector('#privacy_editor'), {
+      toolbar: [
+        'heading', '|', 'bold', 'italic', 'link',
+        'bulletedList', 'numberedList', 'blockQuote',
+        '|', 'insertTable', 'mediaEmbed', 'undo', 'redo'
+      ]
+    })
+    .then(editor => {
+      privacyEditor = editor;
+    })
+    .catch(error => {
+      console.error('CKEditor error:', error);
+    });
+
+  // Sync CKEditor content on form submit
+  document.getElementById('privacyForm').addEventListener('submit', function(event) {
+    if (privacyEditor) {
+      document.getElementById('privacy_content').value = privacyEditor.getData();
+    }
+  });
+</script>
+
+
+<%- include("footer.ejs") %>

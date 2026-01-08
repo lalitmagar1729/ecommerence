@@ -1,0 +1,265 @@
+<%- include("navbar.ejs") %>
+
+  <!-- Breadcrumbs -->
+  <section class="breadcrumb-section py-3 bg-light">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="/index">Home</a></li>
+          <li class="breadcrumb-item active">Products</li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section class="products-section py-5">
+    <div class="container">
+      <div class="row">
+        <!-- Filters Sidebar -->
+        <div class="col-lg-3">
+          <form action="/products" method="get">
+            <!-- Mobile Filter Toggle -->
+            <div class="d-lg-none mb-4">
+              <button class="btn btn-outline-primary w-100" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#filters-offcanvas">
+                <i class="bi bi-funnel me-2"></i>Filters
+              </button>
+            </div>
+
+            <!-- Desktop Filters -->
+            <div class="d-none d-lg-block">
+              <div class="filter-card">
+                <h5 class="filter-title">Categories</h5>
+                <% for(var i=0;i< categories.length; i++) { %>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="category_id"
+                      value="<%= categories[i].category_id %>" id="cat-<%= categories[i].category_id %>"
+                      onclick="this.form.submit()"
+                      <%=url_data.category_id.includes(categories[i].category_id.toString()) ? 'checked' : '' %>>
+                    <label class="form-check-label" for="cat-<%= categories[i].category_id %>">
+                      <%= categories[i].category_name %>
+                    </label>
+                  </div>
+                  <% } %>
+              </div>
+<!-- 
+              <div class="filter-card">
+                <h5 class="filter-title">Price Range</h5>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="0-100" id="price-0-100">
+                  <label class="form-check-label" for="price-0-100">Under $100</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="100-500" id="price-100-500">
+                  <label class="form-check-label" for="price-100-500">$100 - $500</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="500-1000" id="price-500-1000">
+                  <label class="form-check-label" for="price-500-1000">$500 - $1000</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="1000+" id="price-1000+">
+                  <label class="form-check-label" for="price-1000+">Over $1000</label>
+                </div>
+              </div> -->
+<!-- 
+              <div class="filter-card">
+                <h5 class="filter-title">Rating</h5>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="5" id="rating-5">
+                  <label class="form-check-label" for="rating-5">
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    & Up
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="4" id="rating-4">
+                  <label class="form-check-label" for="rating-4">
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star text-warning"></i>
+                    & Up
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="3" id="rating-3">
+                  <label class="form-check-label" for="rating-3">
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star text-warning"></i>
+                    <i class="bi bi-star text-warning"></i>
+                    & Up
+                  </label>
+                </div>
+              </div> -->
+
+              <!-- <div class="filter-card">
+                <h5 class="filter-title">Sort By</h5>
+                <select class="form-select">
+                  <option value="featured">Featured</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="rating">Customer Rating</option>
+                  <option value="newest">Newest First</option>
+                </select>
+              </div> -->
+
+              <div class="d-grid gap-2">
+                <button class="btn btn-primary">Apply Filters</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="col-lg-9">
+          <!-- Results Header -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h2>All Products</h2>
+              <p class="text-muted mb-0">Showing <%= total_products %> products</p>
+            </div>
+          </div>
+
+          <!-- Products Grid -->
+          <div class="row g-4" id="productsGrid">
+            <!-- Product 1 -->
+            <% for(var i=0;i < products.length;i++) { %>
+              <div class="col-lg-4 col-md-6">
+                <div class="product-card" data-product-id="<%= i %>" data-product-name="<%= products[i].product_name %>"
+                  data-product-price="<%= products[i].variation_price %>"
+                  data-product-image="/uploads/products/<%= products[i].product_main_image %>">
+                  <a href="/product_details/<%= products[i].product_id %>/<%= products[i].products_variation_id %>">
+                    <img src="/uploads/products/<%= products[i].product_main_image %>" class="card-img-top"
+                      alt="<%= products[i].product_name %>">
+                  </a>
+                  <div class="card-body">
+                    <a href="/product_details/<%= products[i].product_id %>/<%= products[i].products_variation_id %>">
+                      <h5 class="product-title">
+                        <%= products[i].product_name %>
+                      </h5>
+                      <div class="product-price">
+                        <span class="current-price">&#8377;<%= products[i].variation_price %></span>
+                        <span class="old-price">&#x20B9;<%= products[i].variation_market_price %></span>
+                      </div>
+                    </a>
+                    <div class="d-flex gap-2">
+                      <button class="btn btn-add-cart flex-fill">
+                        <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                      </button>
+                      <button class="btn btn-wishlist">
+                        <i class="bi bi-heart"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+          </div>
+
+          <!-- Pagination
+          <!-- <nav aria-label="Products pagination" class="mt-5">
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">2</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">3</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+              </li>
+            </ul>
+          </nav> -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mobile Filters Offcanvas -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="filters-offcanvas">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Filters</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+      <form id="filters-form">
+        <div class="filter-card">
+          <h5 class="filter-title">Categories</h5>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="smartphones" id="cat-smartphones-mobile">
+            <label class="form-check-label" for="cat-smartphones-mobile">Smartphones</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="laptops" id="cat-laptops-mobile">
+            <label class="form-check-label" for="cat-laptops-mobile">Laptops</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="tablets" id="cat-tablets-mobile">
+            <label class="form-check-label" for="cat-tablets-mobile">Tablets</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="headphones" id="cat-headphones-mobile">
+            <label class="form-check-label" for="cat-headphones-mobile">Headphones</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="accessories" id="cat-accessories-mobile">
+            <label class="form-check-label" for="cat-accessories-mobile">Accessories</label>
+          </div>
+        </div>
+
+        <div class="filter-card">
+          <h5 class="filter-title">Price Range</h5>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="0-100" id="price-0-100-mobile">
+            <label class="form-check-label" for="price-0-100-mobile">Under $100</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="100-500" id="price-100-500-mobile">
+            <label class="form-check-label" for="price-100-500-mobile">$100 - $500</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="500-1000" id="price-500-1000-mobile">
+            <label class="form-check-label" for="price-500-1000-mobile">$500 - $1000</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="1000+" id="price-1000+-mobile">
+            <label class="form-check-label" for="price-1000+-mobile">Over $1000</label>
+          </div>
+        </div>
+
+        <div class="filter-card">
+          <h5 class="filter-title">Sort By</h5>
+          <select class="form-select">
+            <option value="featured">Featured</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="rating">Customer Rating</option>
+            <option value="newest">Newest First</option>
+          </select>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" type="submit">Apply Filters</button>
+          <button class="btn btn-outline-secondary btn-clear-filters" type="button">Clear All</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <%- include("footer.ejs") %>

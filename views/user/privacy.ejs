@@ -1,0 +1,45 @@
+<%- include("navbar.ejs") %>
+
+    <!-- Breadcrumbs -->
+    <section class="breadcrumb-section py-3 bg-light">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">Privacy Policy</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Privacy Policy Section -->
+    <section class="privacy-policy-section py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card shadow-lg border-0">
+                        <div class="card-header bg-primary text-white">
+                            <h2 class="mb-0">
+                                <i class="bi bi-shield-check me-2"></i>Privacy Policy
+                            </h2>
+                            <p class="mb-0 mt-2">
+                            Last updated: 
+                            <%= new Date(privacy[0].updated_at).toLocaleString('en-US', { month: 'long', year: 'numeric' }) %>
+                            </p>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="content">
+                                <% for(var i=0; i<privacy.length; i++) { %>
+                                <h4><%= i+1 + ". " + privacy[i].privacy_title %></h4>
+                                <p><%- privacy[i].privacy_description %></p></p>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<%- include("footer.ejs") %>

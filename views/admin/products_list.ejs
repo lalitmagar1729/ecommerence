@@ -1,0 +1,109 @@
+<%- include("navbar.ejs") %>
+
+  <div class="container bg-white p-4 rounded-2 shadow-sm">
+    <div class="row">
+      <div class="col-md-12 mb-3 d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">Products List</h3>
+        <!-- Optional: Add New Product button -->
+        <a href="/admin/products" class="btn btn-primary btn-sm btn-save">
+          <i class="bi bi-plus-circle me-1"></i> Add Product
+        </a>
+      </div>
+
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-light">
+              <tr>
+                <th>#</th>
+                <th>Product Name</th>
+                <th>Brand</th>
+                <th>Details</th>
+                <th>Colors</th>
+                <th>Main Image</th>
+                <th>Highlighted</th>
+                <th>Most Selling</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(var i=0; i < products.length; i++) { %>
+                <tr>
+                  <td>
+                    <%= i+1 %>
+                  </td>
+                  <td class="fw-semibold">
+                    <%= products[i].product_name %>
+                  </td>
+                  <td>
+                    <%= products[i].product_brand %>
+                  </td>
+                  <td>
+                    <!-- Show limited details with tooltip -->
+                    <span title="<%= products[i].product_details %>">
+                      <%= products[i].product_details.length> 60
+                        ? products[i].product_details.substring(0, 60) + "..."
+                        : products[i].product_details %>
+                    </span>
+                  </td>
+                  <td>
+                    <%= products[i].product_colors %>
+                  </td>
+                  <td>
+                    <img src="/uploads/products/<%= products[i].product_main_image %>"
+                      alt="<%= products[i].product_name %>" class="img-thumbnail rounded shadow-sm"
+                      style="width:50px; height:50px; object-fit:cover;">
+                  </td>
+                  <td>
+                    <% if(products[i].is_highlighted==='Yes' ) { %>
+                      <span class="badge bg-success">Yes</span>
+                      <% } else { %>
+                        <span class="badge bg-secondary">No</span>
+                        <% } %>
+                  </td>
+                  <td>
+                    <% if(products[i].is_most_selling==='Yes' ) { %>
+                      <span class="badge bg-primary">Yes</span>
+                      <% } else { %>
+                        <span class="badge bg-secondary">No</span>
+                        <% } %>
+                  </td>
+                  <td>
+                    <a href="/admin/edit_product/<%= products[i].product_id %>" class="btn btn-sm btn-warning me-1"
+                      data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Product">
+                      <i class="bi bi-pencil-square"></i>
+                    </a>
+
+                    <a href="/admin/add_product_variantions/<%= products[i].product_id %>" class="btn btn-sm btn-info me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Variations">
+                      <i class="bi bi-folder-plus"></i>
+                    </a>
+
+                    <a href="/admin/add_product_files/<%= products[i].product_id %>" class="btn btn-sm btn-success me-1"
+                      data-bs-toggle="tooltip" data-bs-placement="top" title="Add Files">
+                      <i class="bi bi-file-earmark-plus"></i>
+                    </a>
+
+                    <a href="/admin/add_product_details/<%= products[i].product_id %>" class="btn btn-sm btn-primary"
+                      data-bs-toggle="tooltip" data-bs-placement="top" title="Add Details">
+                      <i class="bi bi-card-text"></i>
+                    </a>
+                  </td>
+                </tr>
+                <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Initialize tooltips in your page -->
+  <script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+  </script>
+
+
+  <%- include("footer.ejs") %>
